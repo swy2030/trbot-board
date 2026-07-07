@@ -114,7 +114,7 @@ a{color:var(--accent)}
   <h2>오늘 한눈에</h2>
   <div class="lead"><div class="li quiet"><span class="b"></span><span>7/7(화) 마감 결과: <strong>매매 없음</strong> — 진입 조건을 충족한 종목이 없었음 (관망)</span></div>
 <div class="li watch"><span class="b"></span><span>오늘 밤 주시: SPY가 <span class='num'>2.14%</span> 넘게 하락 마감하면 UPRO · QQQ가 <span class='num'>2.83%</span> 넘게 하락 마감하면 TQQQ 진입 후보</span></div>
-<div class="li quiet"><span class="b"></span><span>다음 확정 반영: 미국장 마감 후(한국 아침) <code>아침업데이트</code> 실행 시</span></div></div>
+<div class="li quiet"><span class="b"></span><span>다음 확정 반영: 미국장 마감 후 아침 자동 실행 (수동은 <code>아침업데이트</code>)</span></div></div>
 </section>
 
 <section class="card">
@@ -130,20 +130,20 @@ a{color:var(--accent)}
   <div style="margin-top:12px">
 <svg viewBox="0 0 600 130" width="100%" role="img" aria-label="가상 계좌 자본 추이" id="eqchart" style="touch-action:none">
   <line x1="8" y1="108" x2="592" y2="108" stroke="var(--line)" stroke-width="1"/>
+  <line x1="8" y1="60.0" x2="592" y2="60.0" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3" opacity="0.7"/><text x="8" y="56.0">원금</text>
   <path d="M8.0,60.0 L202.7,60.0 L397.3,60.0 L592.0,60.0 L592.0,108 L8.0,108 Z" fill="var(--accent)" opacity="0.10"/>
   <path d="M8.0,60.0 L202.7,60.0 L397.3,60.0 L592.0,60.0" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
   <circle cx="592.0" cy="60.0" r="3.5" fill="var(--accent)"/>
-  <circle id="focus" r="3.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2" style="display:none"/>
+  <circle class="focus" r="3.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2" style="display:none"/>
   <text x="8" y="124">2026-07-01</text>
   <text x="592" y="124" text-anchor="end">2026-07-07</text>
   <text x="592" y="52.0" text-anchor="end">5,000$</text>
 </svg>
-<div id="tip" class="num"></div>
 <script>
 (function(){
   var pts=[["2026-07-01", 5000.0], ["2026-07-02", 5000.0], ["2026-07-06", 5000.0], ["2026-07-07", 5000.0]], svg=document.getElementById('eqchart');
   if(!svg||pts.length<2) return;
-  var tip=document.getElementById('tip'), focus=document.getElementById('focus');
+  var tip=document.getElementById('tip'), focus=svg.querySelector('.focus');
   var W=600,PL=8,PR=8,PT=12,PB=22,H=130,lo=4975.0,hi=5024.999999999999;
   function show(ev){
     var r=svg.getBoundingClientRect();
@@ -282,7 +282,7 @@ a{color:var(--accent)}
 20일선은 급락 후 되돌아올 복귀 목표선으로 씀</dd>
 <dt>ATR(20)</dt><dd>최근 20일의 하루 평균 진폭. 손절 폭을 고정 %가 아니라 그 종목의 변동성에 맞추는 도구</dd>
 <dt>1R</dt><dd>한 번의 매매에서 계획한 손실 단위 = 손절선까지 거리 × 수량. "−1R 청산" = 계획한 만큼만 지고 나온 것</dd>
-<dt>PF (Profit Factor)</dt><dd>총이익 ÷ 총손실. 1.29면 손실 1$당 이익 1.29$ — 1보다 크면 이익 우위</dd>
+<dt>PF (Profit Factor)</dt><dd>총이익 ÷ 총손실. 1.35면 손실 1$당 이익 1.35$ — 1보다 크면 이익 우위</dd>
 <dt>MDD (최대 낙폭)</dt><dd>자본 고점에서 저점까지의 최대 하락률 — 견뎌야 했던 최악 구간의 깊이</dd>
 <dt>CAGR</dt><dd>연평균 복리 수익률</dd>
 <dt>승률</dt><dd>이익으로 끝난 매매의 비율</dd>
@@ -296,15 +296,16 @@ a{color:var(--accent)}
 <section class="card">
   <h2>운영 안내</h2>
   <div class="lead">
-    <div class="li hot"><span class="b"></span><span><strong>매일 아침</strong> — <code>아침업데이트.command</code> 더블클릭:
-    마감 데이터 수집 → 가상 원장 갱신 → 이 화면 재생성</span></div>
+    <div class="li hot"><span class="b"></span><span><strong>전자동</strong> — 매일 아침 클라우드가 원장 갱신 → Slack 리포트 →
+    이 화면 재발행. 미국장 시간엔 30분 주기 장중 경보(손절선·익절·진입 예비)가 별도로 옴</span></div>
     <div class="li watch"><span class="b"></span><span><strong>실거래 주문하는 날 새벽 04:30~04:55</strong> —
     <code>장중체크.command</code>: 마감 직전 예비 시그널·주문표 (참고용, 확정 판정은 종가)</span></div>
-    <div class="li"><span class="b"></span><span>Slack 알림: <strong>켜짐</strong> — 아침업데이트마다 일일 리포트가 채널로 자동 발송됨 ·
-    사본은 <code>paper/last_notification.txt</code></span></div>
+    <div class="li"><span class="b"></span><span>수동 예비: 자동 실행 실패 경보가 오면 <code>아침업데이트.command</code> 더블클릭 ·
+    일일 요약 사본은 <code>paper/last_notification.txt</code></span></div>
   </div>
 </section>
 
-<footer>생성 2026-07-08 08:11 · 데이터 yfinance 수정주가 · 정합 감시(페어 정합·날짜 정렬): ✅ 정상 · 가상 체결(슬리피지 0.10% 편도)<br>
+<div id="tip" class="num"></div>
+<footer>생성 2026-07-08 08:54 · 데이터 yfinance 수정주가 · 정합 감시(페어 정합·날짜 정렬): ✅ 정상 · 가상 체결(슬리피지 0.10% 편도)<br>
 본 화면은 전략 검증용이며 투자 권유가 아님 · 3배 레버리지 ETF는 손실이 빠르게 확대될 수 있음</footer>
 </div></body></html>
