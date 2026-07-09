@@ -107,13 +107,13 @@ a{color:var(--accent)}
 <div class="wrap">
 <header class="top">
   <h1>QuantSignalBot <span class="badge">가상매매 검증 중</span></h1>
-  <span class="asof">미국 7/8(수) 마감 반영</span>
+  <span class="asof">미국 7/9(목) 마감 반영</span>
 </header>
 
 <section class="card">
   <h2>오늘 한눈에</h2>
-  <div class="lead"><div class="li quiet"><span class="b"></span><span>7/8(수) 마감 결과: <strong>매매 없음</strong> — 진입 조건을 충족한 종목이 없었음 (관망)</span></div>
-<div class="li watch"><span class="b"></span><span>오늘 밤 주시: SPY가 <span class='num'>0.92%</span> 넘게 하락 마감하면 UPRO · XLF가 <span class='num'>1.52%</span> 넘게 하락 마감하면 FAS · QQQ가 <span class='num'>2.68%</span> 넘게 하락 마감하면 TQQQ 진입 후보</span></div>
+  <div class="lead"><div class="li quiet"><span class="b"></span><span>7/9(목) 마감 결과: <strong>매매 없음</strong> — 진입 조건을 충족한 종목이 없었음 (관망)</span></div>
+<div class="li quiet"><span class="b"></span><span>오늘 밤: 전 종목이 진입 조건과 거리 있음 — 관망 가능성 높음</span></div>
 <div class="li quiet"><span class="b"></span><span>다음 확정 반영: 미국장 마감 후 아침 자동 실행 (수동은 <code>아침업데이트</code>)</span></div></div>
 </section>
 
@@ -125,23 +125,23 @@ a{color:var(--accent)}
     <span class="chip">현금 <span class="num">5,000.00$</span></span>
     <span class="chip">보유 0종목</span>
     <span class="chip">완료 매매 0건</span>
-    <span class="chip">시그널 0 · 근접 3</span>
+    <span class="chip">전 종목 대기</span>
   </div>
   <div style="margin-top:12px">
 <svg viewBox="0 0 600 130" width="100%" role="img" aria-label="가상 계좌 자본 추이" id="eqchart" style="touch-action:none">
   <line x1="8" y1="108" x2="592" y2="108" stroke="var(--line)" stroke-width="1"/>
   <line x1="8" y1="60.0" x2="592" y2="60.0" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3" opacity="0.7"/><text x="8" y="56.0">원금</text>
-  <path d="M8.0,60.0 L154.0,60.0 L300.0,60.0 L446.0,60.0 L592.0,60.0 L592.0,108 L8.0,108 Z" fill="var(--accent)" opacity="0.10"/>
-  <path d="M8.0,60.0 L154.0,60.0 L300.0,60.0 L446.0,60.0 L592.0,60.0" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M8.0,60.0 L124.8,60.0 L241.6,60.0 L358.4,60.0 L475.2,60.0 L592.0,60.0 L592.0,108 L8.0,108 Z" fill="var(--accent)" opacity="0.10"/>
+  <path d="M8.0,60.0 L124.8,60.0 L241.6,60.0 L358.4,60.0 L475.2,60.0 L592.0,60.0" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
   <circle cx="592.0" cy="60.0" r="3.5" fill="var(--accent)"/>
   <circle class="focus" r="3.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2" style="display:none"/>
   <text x="8" y="124">2026-07-01</text>
-  <text x="592" y="124" text-anchor="end">2026-07-08</text>
+  <text x="592" y="124" text-anchor="end">2026-07-09</text>
   <text x="592" y="52.0" text-anchor="end">5,000$</text>
 </svg>
 <script>
 (function(){
-  var pts=[["2026-07-01", 5000.0], ["2026-07-02", 5000.0], ["2026-07-06", 5000.0], ["2026-07-07", 5000.0], ["2026-07-08", 5000.0]], svg=document.getElementById('eqchart');
+  var pts=[["2026-07-01", 5000.0], ["2026-07-02", 5000.0], ["2026-07-06", 5000.0], ["2026-07-07", 5000.0], ["2026-07-08", 5000.0], ["2026-07-09", 5000.0]], svg=document.getElementById('eqchart');
   if(!svg||pts.length<2) return;
   var tip=document.getElementById('tip'), focus=svg.querySelector('.focus');
   var W=600,PL=8,PR=8,PT=12,PB=22,H=130,lo=4975.0,hi=5024.999999999999;
@@ -168,44 +168,44 @@ a{color:var(--accent)}
 <section class="card">
   <h2>오늘 밤 매매 시나리오 — 주문 기준: 가상 계좌 5,000$</h2>
   <div class="siglist">
-<div class="sig near">
+<div class="sig wait">
   <div class="row1"><span class="pair">UPRO <span class="meta">S&amp;P500 3배 · 신호는 SPY 기준</span></span>
-  <span class="pill near">조건 근접</span></div>
-  <div class="trigger">SPY가 <strong class="num">738.57</strong> 미만으로 마감하면 진입 <span class="num">(0.92% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 136.96$</div></div><div class="cell"><div class="k">수량</div><div class="v num">4주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 126.80$</div></div><div class="cell"><div class="k">익절 기준 · SPY 20일선</div><div class="v num">740.94</div></div></div>
-  <div class="meta num">RSI(2) 31.6 (진입 기준: 10 미만) · 종가 745.40 · 200일선 대비 +8.0%</div>
-  <div class="meta">투입 ≈ 548$ · 손절가 도달 시 손실 41$ (계좌의 0.8%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">126.80$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② SPY 200일선 아래 마감 · ③ 5거래일 경과 · ④ SPY 20일선 <span class="num">740.94</span> 터치 시 전량 익절</div>
+  <span class="pill wait">대기</span></div>
+  <div class="trigger">SPY가 <strong class="num">719.90</strong> 미만으로 마감하면 진입 <span class="num">(4.23% 추가 하락 필요)</span></div>
+  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 126.06$</div></div><div class="cell"><div class="k">수량</div><div class="v num">4주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 116.03$</div></div><div class="cell"><div class="k">익절 기준 · SPY 20일선</div><div class="v num">741.76</div></div></div>
+  <div class="meta num">RSI(2) 77.1 (진입 기준: 10 미만) · 종가 751.71 · 200일선 대비 +8.8%</div>
+  <div class="meta">투입 ≈ 504$ · 손절가 도달 시 손실 40$ (계좌의 0.8%) — 수량이 이 한도에 맞춰 계산된 것임</div>
+  <div class="meta">매도 순서: ① 손절가 <span class="num">116.03$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② SPY 200일선 아래 마감 · ③ 5거래일 경과 · ④ SPY 20일선 <span class="num">741.76</span> 터치 시 전량 익절</div>
 </div>
 
-<div class="sig near">
+<div class="sig wait">
   <div class="row1"><span class="pair">FAS <span class="meta">금융 3배 · 신호는 XLF 기준</span></span>
-  <span class="pill near">조건 근접</span></div>
-  <div class="trigger">XLF가 <strong class="num">54.13</strong> 미만으로 마감하면 진입 <span class="num">(1.52% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 150.74$</div></div><div class="cell"><div class="k">수량</div><div class="v num">4주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 138.47$</div></div><div class="cell"><div class="k">익절 기준 · XLF 20일선</div><div class="v num">53.90</div></div></div>
-  <div class="meta num">RSI(2) 21.6 (진입 기준: 10 미만) · 종가 54.97 · 200일선 대비 +5.3%</div>
-  <div class="meta">투입 ≈ 603$ · 손절가 도달 시 손실 49$ (계좌의 1.0%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">138.47$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② XLF 200일선 아래 마감 · ③ 5거래일 경과 · ④ XLF 20일선 <span class="num">53.90</span> 터치 시 전량 익절</div>
+  <span class="pill wait">대기</span></div>
+  <div class="trigger">XLF가 <strong class="num">52.56</strong> 미만으로 마감하면 진입 <span class="num">(5.37% 추가 하락 필요)</span></div>
+  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 136.55$</div></div><div class="cell"><div class="k">수량</div><div class="v num">4주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 124.29$</div></div><div class="cell"><div class="k">익절 기준 · XLF 20일선</div><div class="v num">54.06</div></div></div>
+  <div class="meta num">RSI(2) 56.2 (진입 기준: 10 미만) · 종가 55.54 · 200일선 대비 +6.4%</div>
+  <div class="meta">투입 ≈ 546$ · 손절가 도달 시 손실 49$ (계좌의 1.0%) — 수량이 이 한도에 맞춰 계산된 것임</div>
+  <div class="meta">매도 순서: ① 손절가 <span class="num">124.29$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② XLF 200일선 아래 마감 · ③ 5거래일 경과 · ④ XLF 20일선 <span class="num">54.06</span> 터치 시 전량 익절</div>
 </div>
 
-<div class="sig near">
+<div class="sig wait">
   <div class="row1"><span class="pair">TQQQ <span class="meta">나스닥100 3배 · 신호는 QQQ 기준</span></span>
-  <span class="pill near">조건 근접</span></div>
-  <div class="trigger">QQQ가 <strong class="num">692.34</strong> 미만으로 마감하면 진입 <span class="num">(2.68% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 66.86$</div></div><div class="cell"><div class="k">수량</div><div class="v num">5주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 57.18$</div></div><div class="cell"><div class="k">익절 기준 · QQQ 20일선</div><div class="v num">719.88</div></div></div>
-  <div class="meta num">RSI(2) 36.7 (진입 기준: 10 미만) · 종가 711.44 · 200일선 대비 +12.0%</div>
-  <div class="meta">투입 ≈ 334$ · 손절가 도달 시 손실 48$ (계좌의 1.0%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">57.18$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② QQQ 200일선 아래 마감 · ③ 5거래일 경과 · ④ QQQ 20일선 <span class="num">719.88</span> 터치 시 전량 익절</div>
+  <span class="pill wait">대기</span></div>
+  <div class="trigger">QQQ가 <strong class="num">660.45</strong> 미만으로 마감하면 진입 <span class="num">(8.69% 추가 하락 필요)</span></div>
+  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 56.45$</div></div><div class="cell"><div class="k">수량</div><div class="v num">5주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 46.85$</div></div><div class="cell"><div class="k">익절 기준 · QQQ 20일선</div><div class="v num">720.70</div></div></div>
+  <div class="meta num">RSI(2) 76.1 (진입 기준: 10 미만) · 종가 723.28 · 200일선 대비 +13.7%</div>
+  <div class="meta">투입 ≈ 282$ · 손절가 도달 시 손실 48$ (계좌의 1.0%) — 수량이 이 한도에 맞춰 계산된 것임</div>
+  <div class="meta">매도 순서: ① 손절가 <span class="num">46.85$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② QQQ 200일선 아래 마감 · ③ 5거래일 경과 · ④ QQQ 20일선 <span class="num">720.70</span> 터치 시 전량 익절</div>
 </div>
 
 <div class="sig wait">
   <div class="row1"><span class="pair">SOXL <span class="meta">반도체 3배 · 신호는 SOXX 기준</span></span>
   <span class="pill wait">대기</span></div>
-  <div class="trigger">SOXX가 <strong class="num">503.47</strong> 미만으로 마감하면 진입 <span class="num">(10.42% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 120.17$</div></div><div class="cell"><div class="k">수량</div><div class="v num">1주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 49.15$</div></div><div class="cell"><div class="k">익절 기준 · SOXX 20일선</div><div class="v num">596.80</div></div></div>
-  <div class="meta num">RSI(2) 41.3 (진입 기준: 10 미만) · 종가 562.03 · 200일선 대비 +47.7%</div>
-  <div class="meta">투입 ≈ 120$ · 손절가 도달 시 손실 71$ (계좌의 1.4%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">49.15$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② SOXX 200일선 아래 마감 · ③ 5거래일 경과 · ④ SOXX 20일선 <span class="num">596.80</span> 터치 시 전량 익절</div>
+  <div class="trigger">SOXX가 <strong class="num">463.90</strong> 미만으로 마감하면 진입 <span class="num">(20.25% 추가 하락 필요)</span></div>
+  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 75.53$</div></div><div class="cell"><div class="k">수량</div><div class="v num">1주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 5.09$</div></div><div class="cell"><div class="k">익절 기준 · SOXX 20일선</div><div class="v num">597.79</div></div></div>
+  <div class="meta num">RSI(2) 71.4 (진입 기준: 10 미만) · 종가 581.70 · 200일선 대비 +52.2%</div>
+  <div class="meta">투입 ≈ 76$ · 손절가 도달 시 손실 70$ (계좌의 1.4%) — 수량이 이 한도에 맞춰 계산된 것임</div>
+  <div class="meta">매도 순서: ① 손절가 <span class="num">5.09$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② SOXX 200일선 아래 마감 · ③ 5거래일 경과 · ④ SOXX 20일선 <span class="num">597.79</span> 터치 시 전량 익절</div>
 </div></div>
   <p class="note" style="margin:10px 0 0">시나리오는 예측이 아님 — 확정된 규칙을 "내일 종가가 얼마면 조건이 켜지나"로
   거꾸로 계산해 둔 값임. 복수 충족 시 RSI 낮은 순으로 최대 3종목(같은 섹터군 1종목)만 진입.</p>
@@ -308,6 +308,6 @@ a{color:var(--accent)}
 </section>
 
 <div id="tip" class="num"></div>
-<footer>생성 2026-07-08 23:31 · 데이터 yfinance 수정주가 · 정합 감시(페어 정합·날짜 정렬): ✅ 정상 · 가상 체결(슬리피지 0.10% 편도)<br>
+<footer>생성 2026-07-09 23:38 · 데이터 yfinance 수정주가 · 정합 감시(페어 정합·날짜 정렬): ✅ 정상 · 가상 체결(슬리피지 0.10% 편도)<br>
 본 화면은 전략 검증용이며 투자 권유가 아님 · 3배 레버리지 ETF는 손실이 빠르게 확대될 수 있음</footer>
 </div></body></html>
