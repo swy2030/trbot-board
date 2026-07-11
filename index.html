@@ -1,131 +1,206 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"></head><body><title>QuantSignalBot 대시보드</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"></head><body><title>QuantSignalBot</title>
 <style>
 :root{
-  --bg:#F5F7F8; --surface:#FFFFFF; --ink:#1A2228; --muted:#5C6B76; --line:#DDE4E8;
-  --accent:#00829B; --accent-tint:#E4F1F4; --warn:#B07A18; --warn-tint:#F5EDDA;
-  --up:#C4453C; --down:#2B5FAB; --chip:#ECF1F3;
+  --bg:#F2F4F6; --surface:#FFFFFF; --ink:#191F28; --sub:#4E5968; --muted:#8B95A1;
+  --line:#E5E8EB; --accent:#3182F6; --accent-tint:#E8F3FF;
+  --warn:#D9730D; --warn-tint:#FFF3E0; --danger:#F04452; --danger-tint:#FFEBED;
+  --chip:#F2F4F6; --shadow:0 1px 2px rgba(0,0,0,.04);
+  --up:var(--danger); --down:var(--accent);
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --bg:#10161A; --surface:#1A2228; --ink:#E8EDF0; --muted:#8FA0AB; --line:#2A3540;
-    --accent:#3FB5BE; --accent-tint:#11343A; --warn:#D9A441; --warn-tint:#332B14;
-    --up:#E06D63; --down:#6C9BE0; --chip:#232E37;
+    --bg:#111215; --surface:#1B1D22; --ink:#E9EAED; --sub:#A8B0BA; --muted:#7A828C;
+    --line:#2A2D33; --accent:#5A9CFF; --accent-tint:#17273D;
+    --warn:#E8944A; --warn-tint:#332614; --danger:#FF6B6B; --danger-tint:#3A1A1E;
+    --chip:#24262C; --shadow:none;
   }
 }
 :root[data-theme="light"]{
-  --bg:#F5F7F8; --surface:#FFFFFF; --ink:#1A2228; --muted:#5C6B76; --line:#DDE4E8;
-  --accent:#00829B; --accent-tint:#E4F1F4; --warn:#B07A18; --warn-tint:#F5EDDA;
-  --up:#C4453C; --down:#2B5FAB; --chip:#ECF1F3;
+  --bg:#F2F4F6; --surface:#FFFFFF; --ink:#191F28; --sub:#4E5968; --muted:#8B95A1;
+  --line:#E5E8EB; --accent:#3182F6; --accent-tint:#E8F3FF;
+  --warn:#D9730D; --warn-tint:#FFF3E0; --danger:#F04452; --danger-tint:#FFEBED;
+  --chip:#F2F4F6; --shadow:0 1px 2px rgba(0,0,0,.04);
 }
 :root[data-theme="dark"]{
-  --bg:#10161A; --surface:#1A2228; --ink:#E8EDF0; --muted:#8FA0AB; --line:#2A3540;
-  --accent:#3FB5BE; --accent-tint:#11343A; --warn:#D9A441; --warn-tint:#332B14;
-  --up:#E06D63; --down:#6C9BE0; --chip:#232E37;
+  --bg:#111215; --surface:#1B1D22; --ink:#E9EAED; --sub:#A8B0BA; --muted:#7A828C;
+  --line:#2A2D33; --accent:#5A9CFF; --accent-tint:#17273D;
+  --warn:#E8944A; --warn-tint:#332614; --danger:#FF6B6B; --danger-tint:#3A1A1E;
+  --chip:#24262C; --shadow:none;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-  font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
-.wrap{max-width:680px;margin:0 auto;padding:16px 16px 48px;display:flex;flex-direction:column;gap:14px}
-header.top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:4px 2px}
-header.top h1{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0}
+  font-family:"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,sans-serif;
+  font-size:14.5px;line-height:1.6;letter-spacing:-.01em;-webkit-text-size-adjust:100%}
+.wrap{max-width:640px;margin:0 auto;padding:14px 14px 56px;display:flex;flex-direction:column;gap:12px}
+.num{font-variant-numeric:tabular-nums}
+code{background:var(--chip);padding:1px 6px;border-radius:6px;font-size:12.5px}
+a{color:var(--accent);text-decoration:none}
+
+header.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 4px 0}
+header.top h1{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:0}
 header.top .asof{font-size:12px;color:var(--muted)}
-.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;
+.badge{display:inline-block;font-size:11px;font-weight:700;vertical-align:2px;margin-left:6px;
   padding:2px 8px;border-radius:99px;background:var(--accent-tint);color:var(--accent)}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.card h2{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;margin:0 0 10px;text-transform:uppercase}
-.num{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
-code{background:var(--chip);padding:1px 5px;border-radius:4px;font-size:12px}
-.hero{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px}
-.hero .eq{font-size:32px;font-weight:800;letter-spacing:-.02em}
-.hero .unit{font-size:15px;color:var(--muted);font-weight:600}
-.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:3px 10px;
-  border-radius:99px;background:var(--chip);color:var(--ink)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+
+.card{background:var(--surface);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.card h2{font-size:15px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--ink)}
+.card h2 .cnt{color:var(--muted);font-weight:600;font-size:13px;margin-left:4px}
+
+/* 오늘 한 줄 (히어로) */
+.hero-line{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.4;margin:0}
+.hero-sub{font-size:13.5px;color:var(--sub);margin-top:6px;line-height:1.6}
+.hero-sub b{font-weight:700;color:var(--ink)}
+
+/* 자산 큰 숫자 */
+.money{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.money .unit{font-size:15px;color:var(--muted);font-weight:600;margin-left:2px}
+.money-sub{font-size:13.5px;margin-top:4px;color:var(--sub)}
 .pnl-up{color:var(--up);font-weight:700}
 .pnl-down{color:var(--down);font-weight:700}
 .pnl-flat{color:var(--muted);font-weight:700}
-.lead{display:flex;flex-direction:column;gap:9px}
-.lead .li{display:flex;gap:9px;font-size:13.5px;line-height:1.55}
-.lead .li .b{width:7px;height:7px;border-radius:99px;margin-top:7px;flex:none;background:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;padding:4px 10px;
+  border-radius:12px;background:var(--chip);color:var(--sub)}
+.chip b{color:var(--ink);font-weight:700}
+
+/* 종목 카드 */
+.stocklist{display:flex;flex-direction:column;gap:10px}
+.stock{border-radius:14px;background:var(--chip);padding:14px}
+.stock .head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.stock .tk{font-size:16px;font-weight:800;letter-spacing:-.01em}
+.stock .tk .sec{font-size:12px;color:var(--muted);font-weight:600;margin-left:6px}
+.pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap;flex:none}
+.pill.signal{background:var(--accent);color:#fff}
+.pill.near{background:var(--warn-tint);color:var(--warn)}
+.pill.wait{background:var(--surface);color:var(--muted)}
+.stock .big{font-size:19px;font-weight:800;margin-top:6px;line-height:1.35}
+.stock .cond{font-size:14.5px;margin-top:6px;line-height:1.55}
+.stock .cond b{font-weight:800}
+.stock .sub{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.6}
+
+/* 할 일 배너 */
+.todo{background:var(--danger-tint);color:var(--danger);font-weight:700;font-size:13.5px;
+  border-radius:10px;padding:9px 12px;margin-top:8px;line-height:1.5}
+
+/* 핵심 숫자 그리드 */
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin-top:10px}
+.kv .cell{background:var(--surface);border-radius:10px;padding:8px 10px;min-width:0}
+.kv .k{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv .v{font-size:14.5px;font-weight:700;margin-top:2px}
+
+/* 매도 계획 체크리스트 */
+.plan{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.plan .step{display:flex;gap:8px;font-size:13px;line-height:1.55;color:var(--sub)}
+.plan .step .n{flex:none;width:17px;height:17px;border-radius:99px;background:var(--surface);
+  color:var(--muted);font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.plan .step b{color:var(--ink)}
+.plan .step.hit .n{background:var(--danger);color:#fff}
+.plan .step.hit{color:var(--danger);font-weight:700}
+
+/* 요약 줄 리스트 */
+.lead{display:flex;flex-direction:column;gap:8px}
+.lead .li{display:flex;gap:9px;font-size:13.5px;line-height:1.6;color:var(--sub)}
+.lead .li .b{width:6px;height:6px;border-radius:99px;margin-top:8px;flex:none;background:var(--line)}
+.lead .li.hot{color:var(--ink)}
 .lead .li.hot .b{background:var(--accent)}
 .lead .li.watch .b{background:var(--warn)}
-.sig{border-left:3px solid var(--line);padding:10px 12px;border-radius:8px;
-  background:var(--surface);border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);
-  display:flex;flex-direction:column;gap:4px}
-.sig.signal{border-left-color:var(--accent)}
-.sig.near{border-left-color:var(--warn)}
-.sig .row1{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.sig .pair{font-weight:700;font-size:14.5px}
-.pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
-.pill.signal{background:var(--accent-tint);color:var(--accent)}
-.pill.near{background:var(--warn-tint);color:var(--warn)}
-.pill.wait{background:var(--chip);color:var(--muted)}
-.sig .meta{font-size:12.5px;color:var(--muted)}
-.sig .trigger{font-size:13.5px}
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:6px;margin:4px 0 2px}
-.kv .cell{background:var(--chip);border-radius:6px;padding:6px 9px;min-width:0}
-.kv .k{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kv .v{font-size:14.5px;font-weight:700;margin-top:1px}
-.siglist{display:flex;flex-direction:column;gap:8px}
-.poslist{display:flex;flex-direction:column;gap:8px}
-.pos{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;
-  padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:13.5px}
-.pos .t{font-weight:700;font-size:14.5px}
-.pos .meta{font-size:12.5px;color:var(--muted)}
+
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{color:var(--muted);font-weight:600;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
 tr:last-child td{border-bottom:0}
 .tblwrap{overflow-x:auto}
-.empty{color:var(--muted);font-size:13px;padding:6px 0;line-height:1.7}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.stat{background:var(--chip);border-radius:8px;padding:10px 12px}
+.empty{color:var(--sub);font-size:13.5px;line-height:1.7;padding:2px 0}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.stat{background:var(--chip);border-radius:12px;padding:11px 12px}
 .stat .k{font-size:11.5px;color:var(--muted)}
-.stat .v{font-size:17px;font-weight:700;margin-top:2px}
-.note{font-size:12px;color:var(--muted);line-height:1.6}
-details{border-top:1px dashed var(--line);margin-top:12px;padding-top:10px}
-summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--accent);list-style:none;-webkit-tap-highlight-color:transparent}
+.stat .v{font-size:17px;font-weight:800;margin-top:2px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.65}
+
+details{border-top:1px solid var(--line);margin-top:12px;padding-top:11px}
+details:first-of-type{margin-top:2px}
+summary{cursor:pointer;font-size:13.5px;font-weight:700;color:var(--ink);list-style:none;
+  -webkit-tap-highlight-color:transparent;display:flex;justify-content:space-between;align-items:center}
 summary::-webkit-details-marker{display:none}
-summary::before{content:"▸ "}
-details[open] summary::before{content:"▾ "}
-.dbody{margin-top:10px;font-size:13px;line-height:1.7;color:var(--ink)}
-.dbody h4{font-size:13px;margin:12px 0 4px}
+summary::after{content:"↓";color:var(--muted);font-weight:600;transition:transform .15s}
+details[open] summary::after{transform:rotate(180deg)}
+.dbody{margin-top:10px;font-size:13px;line-height:1.75;color:var(--sub)}
+.dbody h4{font-size:13px;margin:12px 0 4px;color:var(--ink)}
 .dbody h4:first-child{margin-top:0}
 .dbody ul{margin:0;padding-left:18px}
 .dbody li{margin:3px 0}
 .dbody dl{margin:0}
-.dbody dt{font-weight:700;margin-top:8px}
-.dbody dd{margin:2px 0 0 0;color:var(--muted)}
-footer{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.7;margin-top:6px}
+.dbody dt{font-weight:700;margin-top:9px;color:var(--ink)}
+.dbody dd{margin:2px 0 0 0}
+
+footer{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.7;margin-top:8px}
 #tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--line);
-  border-radius:6px;padding:5px 9px;font-size:12px;display:none;z-index:9;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  border-radius:8px;padding:5px 9px;font-size:12px;display:none;z-index:9;box-shadow:0 2px 8px rgba(0,0,0,.14)}
 svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:var(--muted)}
-a{color:var(--accent)}
-@media (prefers-reduced-motion: no-preference){ .sig{transition:border-color .15s} }
+@media (prefers-reduced-motion: reduce){ summary::after{transition:none} }
 </style>
 <div class="wrap">
 <header class="top">
-  <h1>QuantSignalBot <span class="badge">가상매매 검증 중</span></h1>
-  <span class="asof">미국 7/10(금) 마감 반영</span>
+  <h1>QuantSignalBot<span class="badge">가상매매 검증 중</span></h1>
+  <span class="asof">미국 7/10(금) 마감</span>
 </header>
 
 <section class="card">
-  <h2>오늘 한눈에</h2>
-  <div class="lead"><div class="li quiet"><span class="b"></span><span>7/10(금) 마감 결과: <strong>매매 없음</strong> — 진입 조건을 충족한 종목이 없었음 (관망)</span></div>
-<div class="li quiet"><span class="b"></span><span>오늘 밤: 전 종목이 진입 조건과 거리 있음 — 관망 가능성 높음</span></div>
-<div class="li quiet"><span class="b"></span><span>다음 확정 반영: 미국장 마감 후 아침 자동 실행 (수동은 <code>아침업데이트</code>)</span></div></div>
+  <p class="hero-line">오늘은 기다리는 날이에요</p><p class="hero-sub">조건에 맞는 종목이 없었어요. 사지 않는 것도 이 전략의 일부예요.</p><p class="hero-sub" style="color:var(--muted)">7/10(금) 마감 기준 · 다음 갱신은 내일 아침 7시쯤이에요</p>
 </section>
 
 <section class="card">
-  <h2>가상 계좌 · 자본 추이 (개시 7/1(수) · 5,000.00$)</h2>
-  <div class="hero"><span class="eq num">5,000.00</span><span class="unit">USD</span><span class="pnl-flat num">±0.00$</span></div>
+  <h2>내 종목 <span class="cnt">실제로 산 것들</span></h2>
+  <div class="empty">아직 등록한 매수가 없어요.<br>실제로 매수하면 <code>python -m scripts.live buy TQQQ 10 88.40</code>처럼 등록하세요.<br>등록하는 순간 손절가·익절 기준·기한을 계산해서 여기서 관리해 드려요.</div>
+</section>
+
+<section class="card">
+  <h2>오늘 밤 주문 계획 <span class="cnt">가상 계좌 5,000$ 기준 — 내 투자금을 등록하면 그 금액으로 계산해요</span></h2>
+  <div class="stocklist">
+<div class="stock">
+  <div class="head"><span class="tk">UPRO<span class="sec">S&amp;P500 3배 · 신호는 SPY 기준</span></span>
+  <span class="pill wait">대기</span></div>
+  <div class="cond">SPY가 <b class='num'>724.47</b> 아래로 마감하면 → <b>사요</b>. 지금보다 <b class='num'>4.0%</b> 더 내려야 해요.</div>
+  <div class="kv"><div class="cell"><div class="k">사는 수량</div><div class="v num">5주</div></div><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈128.45$</div></div><div class="cell"><div class="k">들어가는 돈</div><div class="v num">≈642$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈118.51$</div></div></div>
+  <div class="sub">손절가까지 밀려도 잃는 돈은 <b class='num'>50$</b>(계좌의 1.0%)예요. 수량이 이 한도에 맞춰 계산된 거예요.</div>
+  <div class="sub">단기 과매도 지표 RSI(2)가 <b class='num'>86.4</b>이에요 (기준: 10 미만) · 200일선보다 <b class='num'>+9.2%</b> 위에 있어요</div>
+</div>
+<div class="stock">
+  <div class="head"><span class="tk">FAS<span class="sec">금융 3배 · 신호는 XLF 기준</span></span>
+  <span class="pill wait">대기</span></div>
+  <div class="cond">XLF가 <b class='num'>53.45</b> 아래로 마감하면 → <b>사요</b>. 지금보다 <b class='num'>4.1%</b> 더 내려야 해요.</div>
+  <div class="kv"><div class="cell"><div class="k">사는 수량</div><div class="v num">4주</div></div><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈144.04$</div></div><div class="cell"><div class="k">들어가는 돈</div><div class="v num">≈576$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈131.82$</div></div></div>
+  <div class="sub">손절가까지 밀려도 잃는 돈은 <b class='num'>49$</b>(계좌의 1.0%)예요. 수량이 이 한도에 맞춰 계산된 거예요.</div>
+  <div class="sub">단기 과매도 지표 RSI(2)가 <b class='num'>65.4</b>이에요 (기준: 10 미만) · 200일선보다 <b class='num'>+6.7%</b> 위에 있어요</div>
+</div>
+<div class="stock">
+  <div class="head"><span class="tk">TQQQ<span class="sec">나스닥100 3배 · 신호는 QQQ 기준</span></span>
+  <span class="pill wait">대기</span></div>
+  <div class="cond">QQQ가 <b class='num'>684.06</b> 아래로 마감하면 → <b>사요</b>. 지금보다 <b class='num'>5.7%</b> 더 내려야 해요.</div>
+  <div class="kv"><div class="cell"><div class="k">사는 수량</div><div class="v num">5주</div></div><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈63.83$</div></div><div class="cell"><div class="k">들어가는 돈</div><div class="v num">≈319$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈54.41$</div></div></div>
+  <div class="sub">손절가까지 밀려도 잃는 돈은 <b class='num'>47$</b>(계좌의 0.9%)예요. 수량이 이 한도에 맞춰 계산된 거예요.</div>
+  <div class="sub">단기 과매도 지표 RSI(2)가 <b class='num'>80.7</b>이에요 (기준: 10 미만) · 200일선보다 <b class='num'>+14.0%</b> 위에 있어요</div>
+</div>
+<div class="stock">
+  <div class="head"><span class="tk">SOXL<span class="sec">반도체 3배 · 신호는 SOXX 기준</span></span>
+  <span class="pill wait">대기</span></div>
+  <div class="cond">SOXX가 <b class='num'>522.62</b> 아래로 마감하면 → <b>사요</b>. 지금보다 <b class='num'>10.1%</b> 더 내려야 해요.</div>
+  <div class="kv"><div class="cell"><div class="k">사는 수량</div><div class="v num">1주</div></div><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈134.00$</div></div><div class="cell"><div class="k">들어가는 돈</div><div class="v num">≈134$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈65.17$</div></div></div>
+  <div class="sub">손절가까지 밀려도 잃는 돈은 <b class='num'>69$</b>(계좌의 1.4%)예요. 수량이 이 한도에 맞춰 계산된 거예요.</div>
+  <div class="sub">단기 과매도 지표 RSI(2)가 <b class='num'>70.1</b>이에요 (기준: 10 미만) · 200일선보다 <b class='num'>+51.5%</b> 위에 있어요</div>
+</div></div><p class="note" style="margin:10px 0 0">여러 종목이 동시에 조건을 채우면 과매도가 더 깊은(RSI 낮은) 순서로 최대 3종목만 사요. 사면 5거래일 안에 결판을 내는 단기 전략이에요.</p>
+  <p class="note" style="margin:8px 0 0">이건 예측이 아니에요 — 정해진 규칙을 "얼마가 되면 조건이 켜지나"로
+  거꾸로 계산해 둔 값이에요.</p>
+</section>
+
+<section class="card">
+  <h2>가상 계좌 <span class="cnt">전략 검증 실황 · 7/1(수) 시작</span></h2>
+  <div class="money num">5,000.00<span class="unit">USD</span></div>
+  <div class="money-sub">원금 5,000.00$에서 <span class="pnl-flat num">±0.00$</span> <span class="num">(+0.00%)</span></div>
   <div class="chips">
-    <span class="chip">수익률 <span class="num">+0.00%</span></span>
-    <span class="chip">현금 <span class="num">5,000.00$</span></span>
-    <span class="chip">보유 0종목</span>
-    <span class="chip">완료 매매 0건</span>
-    <span class="chip">전 종목 대기</span>
+    <span class="chip">현금 <b class="num">5,000.00$</b></span>
+    <span class="chip">보유 <b>0종목</b></span>
+    <span class="chip">완료 매매 <b>0건</b></span>
   </div>
   <div style="margin-top:12px">
 <svg viewBox="0 0 600 130" width="100%" role="img" aria-label="가상 계좌 자본 추이" id="eqchart" style="touch-action:none">
@@ -163,155 +238,90 @@ a{color:var(--accent)}
   svg.addEventListener('pointerleave',hide);
 })();
 </script></div>
+  <div class="empty" style="margin-top:10px">지금은 아무것도 들고 있지 않아요. 조건이 맞을 때까지 현금으로 기다려요.</div>
+  <details><summary>매매 기록</summary><div class="dbody">아직 완료한 매매가 없어요. 첫 매수 후 매도까지 마치면 여기에 쌓여요.</div></details>
 </section>
 
 <section class="card">
-  <h2>오늘 밤 매매 시나리오 — 주문 기준: 가상 계좌 5,000$</h2>
-  <div class="siglist">
-<div class="sig wait">
-  <div class="row1"><span class="pair">UPRO <span class="meta">S&amp;P500 3배 · 신호는 SPY 기준</span></span>
-  <span class="pill wait">대기</span></div>
-  <div class="trigger">SPY가 <strong class="num">724.47</strong> 미만으로 마감하면 진입 <span class="num">(4.04% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 128.45$</div></div><div class="cell"><div class="k">수량</div><div class="v num">5주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 118.51$</div></div><div class="cell"><div class="k">익절 기준 · SPY 20일선</div><div class="v num">743.33</div></div></div>
-  <div class="meta num">RSI(2) 86.4 (진입 기준: 10 미만) · 종가 754.95 · 200일선 대비 +9.2%</div>
-  <div class="meta">투입 ≈ 642$ · 손절가 도달 시 손실 50$ (계좌의 1.0%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">118.51$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② SPY 200일선 아래 마감 · ③ 5거래일 경과 · ④ SPY 20일선 <span class="num">743.33</span> 터치 시 전량 익절</div>
+  <h2>전략과 성적</h2>
+  
+<div class="stat-grid">
+  <div class="stat"><div class="k">개발 검증 PF · 2008-11 ~ 2025-03</div><div class="v num">1.35 <span class="note">/ 425건</span></div></div>
+  <div class="stat"><div class="k">개발 검증 MDD · 연수익</div><div class="v num">-8.0% · +1.9%</div></div>
+  <div class="stat"><div class="k">봉인 시험 PF — ✅ 통과</div><div class="v num">4.17 <span class="note">/ 40건</span></div></div>
+  <div class="stat"><div class="k">봉인 시험 MDD · 승률</div><div class="v num">-2.4% · 72%</div></div>
 </div>
-
-<div class="sig wait">
-  <div class="row1"><span class="pair">FAS <span class="meta">금융 3배 · 신호는 XLF 기준</span></span>
-  <span class="pill wait">대기</span></div>
-  <div class="trigger">XLF가 <strong class="num">53.45</strong> 미만으로 마감하면 진입 <span class="num">(4.05% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 144.04$</div></div><div class="cell"><div class="k">수량</div><div class="v num">4주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 131.82$</div></div><div class="cell"><div class="k">익절 기준 · XLF 20일선</div><div class="v num">54.24</div></div></div>
-  <div class="meta num">RSI(2) 65.4 (진입 기준: 10 미만) · 종가 55.71 · 200일선 대비 +6.7%</div>
-  <div class="meta">투입 ≈ 576$ · 손절가 도달 시 손실 49$ (계좌의 1.0%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">131.82$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② XLF 200일선 아래 마감 · ③ 5거래일 경과 · ④ XLF 20일선 <span class="num">54.24</span> 터치 시 전량 익절</div>
-</div>
-
-<div class="sig wait">
-  <div class="row1"><span class="pair">TQQQ <span class="meta">나스닥100 3배 · 신호는 QQQ 기준</span></span>
-  <span class="pill wait">대기</span></div>
-  <div class="trigger">QQQ가 <strong class="num">684.06</strong> 미만으로 마감하면 진입 <span class="num">(5.71% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 63.83$</div></div><div class="cell"><div class="k">수량</div><div class="v num">5주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 54.41$</div></div><div class="cell"><div class="k">익절 기준 · QQQ 20일선</div><div class="v num">722.32</div></div></div>
-  <div class="meta num">RSI(2) 80.7 (진입 기준: 10 미만) · 종가 725.51 · 200일선 대비 +14.0%</div>
-  <div class="meta">투입 ≈ 319$ · 손절가 도달 시 손실 47$ (계좌의 0.9%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">54.41$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② QQQ 200일선 아래 마감 · ③ 5거래일 경과 · ④ QQQ 20일선 <span class="num">722.32</span> 터치 시 전량 익절</div>
-</div>
-
-<div class="sig wait">
-  <div class="row1"><span class="pair">SOXL <span class="meta">반도체 3배 · 신호는 SOXX 기준</span></span>
-  <span class="pill wait">대기</span></div>
-  <div class="trigger">SOXX가 <strong class="num">522.62</strong> 미만으로 마감하면 진입 <span class="num">(10.10% 추가 하락 필요)</span></div>
-  <div class="kv"><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈ 134.00$</div></div><div class="cell"><div class="k">수량</div><div class="v num">1주</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈ 65.17$</div></div><div class="cell"><div class="k">익절 기준 · SOXX 20일선</div><div class="v num">599.80</div></div></div>
-  <div class="meta num">RSI(2) 70.1 (진입 기준: 10 미만) · 종가 581.34 · 200일선 대비 +51.5%</div>
-  <div class="meta">투입 ≈ 134$ · 손절가 도달 시 손실 69$ (계좌의 1.4%) — 수량이 이 한도에 맞춰 계산된 것임</div>
-  <div class="meta">매도 순서: ① 손절가 <span class="num">65.17$</span> 이탈 — 장중 즉시, 갭이면 시가 · ② SOXX 200일선 아래 마감 · ③ 5거래일 경과 · ④ SOXX 20일선 <span class="num">599.80</span> 터치 시 전량 익절</div>
-</div></div>
-  <p class="note" style="margin:10px 0 0">시나리오는 예측이 아님 — 확정된 규칙을 "내일 종가가 얼마면 조건이 켜지나"로
-  거꾸로 계산해 둔 값임. 복수 충족 시 RSI 낮은 순으로 최대 3종목(같은 섹터군 1종목)만 진입.</p>
+<p class="note" style="margin:10px 0 0">PF는 총이익÷총손실(1보다 크면 이익 우위), MDD는 최대 낙폭이에요.
+봉인 시험 구간(2025-04~2026-07)은 이 전략에 유리한 장이었어요 — 장기 기대치는
+개발 검증 수치(PF 1.35, 연 +1.9%)로 보는 게 안전하고, 손실 연도도 주기적으로 와요.
+성적이 좋든 나쁘든 규칙은 새 검증 없이 바꾸지 않아요.</p>
+  <p class="note" style="margin:10px 0 0"><b>월간 건강검진(2026-07):</b> ✅ 정상이에요 — 최근 PF 2.64 · EV +0.220R — 역사적 정상 범위</p>
+  <p class="note" style="margin:6px 0 0"><b>1년 성과의 정상 범위(몬테카를로):</b> 90% 확률로 <span class="num">-3.1% ~ +7.4%</span> 사이예요 · 손실로 끝나는 해도 26% 확률로 와요 · 이 범위 안의 부진은 규칙을 바꿀 이유가 아니에요</p>
   
 <details>
-<summary>전략 규칙 전문 (동결 상태 — 임의 변경 없음)</summary>
+<summary>전략 규칙 전문 <span class="cnt">동결 — 임의로 바꾸지 않아요</span></summary>
 <div class="dbody">
-<h4>언제 사나 — 두 조건이 같은 날 동시에 맞을 때만 (판정은 기초지수 기준)</h4>
+<h4>언제 사나요 — 두 조건이 같은 날 맞을 때만</h4>
 <ul>
-<li>① 장기 상승 추세: 기초지수 종가가 200일 이동평균 위에 있음</li>
-<li>② 단기 과매도: RSI(2)가 10 미만 — 상승 추세 중의 며칠짜리 급락</li>
-<li>충족한 날 종가로 3배 레버리지 ETF 매수. "오르는 시장의 급락을 산다"는 역추세 전략임</li>
+<li>기초지수가 200일 이동평균 위에 있어요 (장기 상승 추세)</li>
+<li>RSI(2)가 10 미만이에요 (상승 추세 속 며칠짜리 급락)</li>
+<li>충족한 날 종가로 레버리지 ETF를 사요. "오르는 시장의 급락을 산다"는 전략이에요</li>
 </ul>
-<h4>얼마나 사나 — 잃어도 되는 금액을 먼저 정하고 수량을 역산</h4>
+<h4>얼마나 사나요 — 잃어도 되는 돈부터 정해요</h4>
 <ul>
-<li>손절까지 밀렸을 때 손실이 계좌의 1%가 되도록 수량 계산 (손절 폭 = 20일 ATR × 2.0)</li>
-<li>한 종목 투입액은 계좌의 20% 이내 · 보유 전체의 합산 손실 한도는 계좌의 3%</li>
-<li>소액 계좌 보완: 계산 수량이 0이어도 1주 손실이 계좌의 2% 이내면 1주 진입 허용</li>
+<li>손절까지 밀렸을 때 계좌의 1%만 잃도록 수량을 거꾸로 계산해요 (손절 폭 = 20일 ATR × 2.0)</li>
+<li>한 종목에 계좌의 20%까지만 넣어요 · 보유 전체의 손실 한도는 3%예요</li>
+<li>계산 수량이 0이어도, 1주 손실이 계좌의 2% 안이면 1주는 사요</li>
 </ul>
-<h4>언제 파나 — 매일 이 순서로 점검해 먼저 걸리는 하나로 청산</h4>
+<h4>언제 파나요 — 매일 이 순서로 보고 먼저 걸리는 하나로</h4>
 <ul>
-<li>① 손절: 레버리지 ETF가 손절선(진입가 − ATR×2.0) 이탈 — 장중 즉시, 갭 하락이면 시가 (이때는 계획 손실을 넘을 수 있음)</li>
-<li>② 추세 이탈: 기초지수가 200일선 아래로 마감 — 진입 전제가 깨졌으므로 정리</li>
-<li>③ 시간 손절: 5거래일 안에 결판이 안 나면 종가 정리 — 자본을 다음 기회로 회전</li>
-<li>④ 익절: 기초지수가 20일 이동평균까지 반등해 터치하면 전량 매도</li>
+<li>① 손절가(매수가 − ATR×2.0)를 깨면 바로 팔아요 — 갭 하락 출발이면 시가에 팔려서 계획보다 더 잃을 수 있어요</li>
+<li>② 기초지수가 200일선 아래로 마감하면 팔아요 — 살 때의 전제가 깨진 거예요</li>
+<li>③ 5거래일 안에 결판이 안 나면 종가에 정리해요 — 돈을 다음 기회로 돌려요</li>
+<li>④ 기초지수가 20일 이동평균에 닿으면 전부 익절해요</li>
 </ul>
-<h4>동시 보유 한도</h4>
+<h4>몇 종목까지 드나요</h4>
 <ul>
-<li>최대 3종목, 같은 섹터군에서는 1종목 — 시그널이 겹치면 RSI가 더 낮은(더 깊은 과매도) 쪽 우선</li>
+<li>동시에 최대 3종목, 같은 섹터군에선 1종목만요. 겹치면 RSI가 더 낮은 쪽을 먼저 사요</li>
 </ul>
 </div>
 </details>
-</section>
-
-<section class="card">
-  <h2>보유 포지션 (가상 원장)</h2>
-  <div class="empty">보유 없음 — 현금 100%로 대기 중.<br>조건이 안 맞으면 사지 않는 것이 이 전략의 정상 동작임 (억지 진입 없음)</div>
-</section>
-
-<section class="card">
-  <h2>내 실거래 — 등록한 체결의 후속 시나리오</h2>
-  <div class="empty">등록된 실거래 체결 없음.<br>실제 매수를 하면 Claude에게 "체결 등록해줘: TQQQ 10주 88.40$"라고 하거나 <code>python -m scripts.live buy TQQQ 10 88.40</code> 실행 —<br>등록 즉시 손절선·익절 목표·기한을 계산해 여기서 추적함 (분할 매수는 등록을 추가하면 평균단가로 합산됨)</div>
-</section>
-
-<section class="card">
-  <h2>청산 기록 (가상 체결)</h2>
-  <div class="empty">아직 완료된 매매 없음 — 첫 진입 후 청산까지 마치면 여기에 기록됨</div>
-</section>
-
-<section class="card">
-  <h2>전략 성적표 — Phase 1 검증 결과</h2>
-  
-<div class="stat-grid">
-  <div class="stat"><div class="k">개발 검증 구간 PF · 2008-11 ~ 2025-03</div><div class="v num">1.35 <span class="note">/ 425건</span></div></div>
-  <div class="stat"><div class="k">개발 검증 MDD · 연수익(CAGR)</div><div class="v num">-8.0% · +1.9%</div></div>
-  <div class="stat"><div class="k">봉인 시험(홀드아웃) PF — ✅ 통과</div><div class="v num">4.17 <span class="note">/ 40건</span></div></div>
-  <div class="stat"><div class="k">봉인 시험 MDD · 승률</div><div class="v num">-2.4% · 72%</div></div>
-</div>
-<p class="note" style="margin:10px 0 0">읽는 법: PF = 총이익÷총손실 (1보다 크면 이익 우위) · MDD = 고점 대비 최대 하락 ·
-봉인 시험 = 개발에 쓰지 않고 아껴둔 구간의 첫 채점. 세부는 아래 '용어 풀이' 참고.
-개발 검증 수치는 현재 설정(리스크 1%) 기준임.</p>
-<p class="note" style="margin:6px 0 0">⚠️ 봉인 시험 구간(2025-04~2026-07)은 이 전략에 유리한 국면이었음 —
-장기 기대치는 개발 검증 구간 수치(PF 1.35, 연 +1.9%)를 기준으로 보는 게 안전하고,
-손실 연도도 주기적으로 옴(최악 연도 PF 0.37). 봉인 시험 수치는 당시 구성(5쌍·리스크 2%)으로 측정된 값이라
-현재 구성(4쌍·1%)에서는 손익 등락 폭이 다름 (PF·승률 성격은 유사).
-규칙은 동결 — 성적이 좋든 나쁘든 새 검증 없이 바꾸지 않음.</p>
-  <p class="note" style="margin:10px 0 0"><strong>월간 건강검진(2026-07):</strong> ✅ 정상 — 최근 PF 2.64 · EV +0.220R — 역사적 정상 범위</p>
-  <p class="note" style="margin:6px 0 0"><strong>1년 성과의 정상 범위(몬테카를로 2026-07):</strong> 90% 확률로 <span class="num">-3.1% ~ +7.4%</span> · 손실 연도 확률 26% · 낙폭 20회 중 1회는 -5.1% 초과 — 이 범위 안의 부진은 규칙을 바꿀 근거가 아님</p>
   
 <details>
-<summary>용어 풀이 (지표·성과 용어)</summary>
+<summary>용어 풀이</summary>
 <div class="dbody"><dl>
-<dt>RSI(2)</dt><dd>최근 2일의 상승·하락 강도를 0~100으로 나타낸 지표 — 낮을수록 단기 급락 상태.
-통상 14일로 계산하지만 이 전략은 2일로 짧게 잡아 급락에 민감하게 반응함</dd>
-<dt>200일선 · 20일선</dt><dd>종가의 이동평균선. 200일선 위 = 장기 상승 추세로 판정하고,
-20일선은 급락 후 되돌아올 복귀 목표선으로 씀</dd>
-<dt>ATR(20)</dt><dd>최근 20일의 하루 평균 진폭. 손절 폭을 고정 %가 아니라 그 종목의 변동성에 맞추는 도구</dd>
-<dt>1R</dt><dd>한 번의 매매에서 계획한 손실 단위 = 손절선까지 거리 × 수량. "−1R 청산" = 계획한 만큼만 지고 나온 것</dd>
-<dt>PF (Profit Factor)</dt><dd>총이익 ÷ 총손실. 1.35면 손실 1$당 이익 1.35$ — 1보다 크면 이익 우위</dd>
-<dt>MDD (최대 낙폭)</dt><dd>자본 고점에서 저점까지의 최대 하락률 — 견뎌야 했던 최악 구간의 깊이</dd>
-<dt>CAGR</dt><dd>연평균 복리 수익률</dd>
-<dt>승률</dt><dd>이익으로 끝난 매매의 비율</dd>
-<dt>홀드아웃 (봉인 시험 구간)</dt><dd>전략 개발·조정에 일절 쓰지 않고 봉인해 둔 최종 시험 구간.
-여기 성적이 좋아야 "과거에 끼워 맞춘 전략"이 아니라고 믿을 수 있음</dd>
-<dt>슬리피지</dt><dd>주문 가격과 실제 체결 가격의 차이. 모든 가상 체결에 편도 0.10%씩 불리하게 반영해 성과를 보수적으로 계산함</dd>
+<dt>RSI(2)</dt><dd>최근 2일의 상승·하락 강도를 0~100으로 나타낸 지표예요. 낮을수록 급락 상태예요.
+보통 14일로 재지만, 이 전략은 2일로 짧게 잡아 급락에 민감하게 반응해요</dd>
+<dt>200일선 · 20일선</dt><dd>종가의 이동평균선이에요. 200일선 위면 장기 상승 추세로 보고,
+20일선은 급락 후 되돌아올 목표선으로 써요</dd>
+<dt>ATR(20)</dt><dd>최근 20일의 하루 평균 진폭이에요. 손절 폭을 고정 %가 아니라 그 종목의 출렁임에 맞춰요</dd>
+<dt>1R</dt><dd>한 번의 매매에서 계획한 손실 단위예요. "−1R로 끝났다" = 계획한 만큼만 지고 나왔다는 뜻이에요</dd>
+<dt>PF</dt><dd>총이익 ÷ 총손실. 1.35면 1$ 잃을 때 1.35$ 벌었다는 뜻이에요. 1보다 크면 이익 우위예요</dd>
+<dt>MDD</dt><dd>자본이 고점에서 얼마나 깊게 빠졌었는지예요. 견뎌야 했던 최악 구간의 깊이예요</dd>
+<dt>CAGR</dt><dd>연평균 복리 수익률이에요</dd>
+<dt>홀드아웃 (봉인 시험)</dt><dd>전략 개발에 일절 쓰지 않고 아껴둔 구간의 최종 시험이에요.
+여기서 성적이 나와야 "과거에 끼워 맞춘 전략"이 아니라고 믿을 수 있어요</dd>
+<dt>슬리피지</dt><dd>주문 가격과 실제 체결 가격의 차이예요. 모든 가상 체결에 편도 0.10%씩 불리하게 반영해요</dd>
 </dl></div>
 </details>
 </section>
 
 <section class="card">
-  <h2>운영 안내</h2>
+  <h2>이 시스템이 돌아가는 방식</h2>
   <div class="lead">
-    <div class="li hot"><span class="b"></span><span><strong>전자동</strong> — 매일 아침 클라우드가 원장 갱신 → Slack 리포트 →
-    이 화면 재발행. 미국장 시간엔 30분 주기 장중 경보(손절선·익절·진입 예비)가 별도로 옴</span></div>
-    <div class="li"><span class="b"></span><span><strong>대기 현금 규칙 (2026-07-11 채택)</strong> — 실계좌 유휴 현금은
-    초단기 국채 ETF(SGOV·BIL)에 둠. 진입 시그널이 뜬 날 당일 매도해 주문 자금으로 씀.
-    이 전략은 역사적으로 자본의 73%가 현금 대기 상태라 이자 수익이 유의미하게 보태짐(수익률은 금리 따라 변동).
-    SGOV 잔고는 시스템에 등록하지 않음 — 전략 성과와 분리 집계함</span></div>
-    <div class="li watch"><span class="b"></span><span><strong>실거래 주문하는 날 새벽 04:30~04:55</strong> —
-    <code>장중체크.command</code>: 마감 직전 예비 시그널·주문표 (참고용, 확정 판정은 종가)</span></div>
-    <div class="li"><span class="b"></span><span>수동 예비: 자동 실행 실패 경보가 오면 <code>아침업데이트.command</code> 더블클릭 ·
-    일일 요약 사본은 <code>paper/last_notification.txt</code></span></div>
+    <div class="li hot"><span class="b"></span><span><b>전자동이에요</b> — 매일 아침 7시쯤 클라우드가 장부를 갱신하고
+    Slack으로 알려 드려요. 미국장 시간엔 30분마다 손절가·익절·진입 근접을 지켜봐요</span></div>
+    <div class="li watch"><span class="b"></span><span><b>대기 현금은 SGOV·BIL에 두세요</b> — 이 전략은 현금으로
+    기다리는 날이 많아요(역사적으로 73%). 진입 신호가 뜬 날 팔아서 주문하면 돼요.
+    SGOV는 여기 등록하지 않아요 — 전략 성과와 따로 봐요</span></div>
+    <div class="li"><span class="b"></span><span>실거래 주문하는 날 새벽 04:30~04:55엔 <code>장중체크</code>를
+    더블클릭하면 마감 직전 예비 신호를 볼 수 있어요 (확정 판정은 종가예요)</span></div>
+    <div class="li"><span class="b"></span><span>자동 실행이 실패하면 Slack으로 경보가 와요 —
+    그때만 <code>아침업데이트</code>를 더블클릭하면 돼요</span></div>
   </div>
 </section>
 
 <div id="tip" class="num"></div>
-<footer>생성 2026-07-11 09:18 · 데이터 yfinance 수정주가 · 정합 감시(페어 정합·날짜 정렬): ✅ 정상 · 가상 체결(슬리피지 0.10% 편도)<br>
-본 화면은 전략 검증용이며 투자 권유가 아님 · 3배 레버리지 ETF는 손실이 빠르게 확대될 수 있음</footer>
+<footer>생성 2026-07-11 09:52 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
+이 화면은 전략 검증용이고 투자 권유가 아니에요 · 3배 레버리지 ETF는 손실이 빠르게 커질 수 있어요</footer>
 </div></body></html>
