@@ -133,6 +133,26 @@ details[open] summary::after{transform:rotate(180deg)}
 .dbody dt{font-weight:700;margin-top:9px;color:var(--ink)}
 .dbody dd{margin:2px 0 0 0}
 
+/* 빠른 등록 폼 */
+.seg{display:flex;background:var(--chip);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:none;color:var(--muted);font-weight:700;font-size:13.5px;
+  padding:9px 0;border-radius:10px;cursor:pointer;font-family:inherit;letter-spacing:-.01em}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.formrow .full{grid-column:1/-1}
+.field label{display:block;font-size:11.5px;color:var(--muted);margin:0 0 4px 2px}
+.field input,.field select{width:100%;border:1.5px solid var(--line);background:var(--surface);
+  color:var(--ink);border-radius:12px;padding:11px 12px;font-size:16px;font-family:inherit;
+  font-variant-numeric:tabular-nums;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent)}
+.btn{width:100%;border:0;background:var(--accent);color:#fff;font-weight:800;font-size:15.5px;
+  padding:13px 0;border-radius:14px;cursor:pointer;font-family:inherit;margin-top:12px;letter-spacing:-.01em}
+.btn:disabled{opacity:.45}
+.btn.ghost{background:var(--chip);color:var(--sub);font-weight:700;font-size:13px;padding:9px 0;border-radius:10px}
+.regmsg{font-size:13.5px;margin-top:10px;line-height:1.6;display:none}
+.regmsg.ok{display:block;color:var(--accent);font-weight:700}
+.regmsg.err{display:block;color:var(--danger);font-weight:700}
+
 footer{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.7;margin-top:8px}
 #tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--line);
   border-radius:8px;padding:5px 9px;font-size:12px;display:none;z-index:9;box-shadow:0 2px 8px rgba(0,0,0,.14)}
@@ -152,6 +172,100 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
 <section class="card">
   <h2>내 종목 <span class="cnt">실제로 산 것들</span></h2>
   <div class="empty">아직 등록한 매수가 없어요.<br>실제로 매수하면 <code>python -m scripts.live buy TQQQ 10 88.40</code>처럼 등록하세요.<br>등록하는 순간 손절가·익절 기준·기한을 계산해서 여기서 관리해 드려요.</div>
+</section>
+
+<section class="card">
+  <h2>빠른 등록 <span class="cnt">매수·매도한 걸 여기서 바로 알려주세요</span></h2>
+  
+<div id="regsetup" style="display:none">
+  <p class="empty">처음 한 번만 연결하면 돼요.<br>
+  GitHub에서 이 저장소 전용 열쇠(토큰)를 만들어 붙여 넣으세요.
+  열쇠는 <b>이 기기 브라우저에만</b> 저장되고, 화면 코드에는 들어가지 않아요.</p>
+  <details><summary>열쇠 만드는 법 <span class="cnt">1분</span></summary>
+  <div class="dbody"><ul>
+  <li>① <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → 토큰 발급 페이지</a>를 열어요</li>
+  <li>② Repository access에서 <b>Only select repositories → TRBot</b>만 골라요</li>
+  <li>③ Permissions → Repository permissions → <b>Actions: Read and write</b>로 설정해요</li>
+  <li>④ 만들어진 <code>github_pat_...</code>을 아래에 붙여 넣어요</li>
+  </ul></div></details>
+  <div class="field" style="margin-top:10px"><label>액세스 토큰</label>
+  <input id="regtoken" type="password" placeholder="github_pat_..." autocomplete="off"></div>
+  <button class="btn" onclick="qsbSaveToken()">연결하기</button>
+</div>
+
+<div id="regform" style="display:none">
+  <div class="seg" id="regseg">
+    <button class="on" data-k="buy" onclick="qsbKind('buy')">매수</button>
+    <button data-k="sell" onclick="qsbKind('sell')">매도</button>
+    <button data-k="capital" onclick="qsbKind('capital')">투자금</button>
+  </div>
+  <div class="formrow">
+    <div class="field" id="f-ticker"><label>종목</label>
+      <select id="regticker"><option>TQQQ</option><option>SOXL</option><option>UPRO</option><option>FAS</option></select></div>
+    <div class="field" id="f-qty"><label>수량 (주)</label>
+      <input id="regqty" inputmode="numeric" placeholder="10"></div>
+    <div class="field full" id="f-price"><label id="pricelabel">체결가 ($)</label>
+      <input id="regprice" inputmode="decimal" placeholder="88.40"></div>
+  </div>
+  <button class="btn" id="regbtn" onclick="qsbSubmit()">등록하기</button>
+  <div class="regmsg" id="regmsg"></div>
+  <p class="note" style="margin:10px 0 0">등록하면 1~2분 안에 손절가·익절 기준을 계산해서
+  Slack으로 알려 드리고, 이 화면도 새로 발행돼요.
+  <a href="#" onclick="qsbForget();return false" style="color:var(--muted)">연결 해제</a></p>
+</div>
+
+<script>
+var QSB_REPO="swy2030/TRBot", QSB_WF="register.yml";
+function qsbTok(){ try{return localStorage.getItem("qsb_pat")||""}catch(e){return ""} }
+function qsbShow(){
+  var t=qsbTok();
+  document.getElementById("regsetup").style.display=t?"none":"block";
+  document.getElementById("regform").style.display=t?"block":"none";
+}
+function qsbSaveToken(){
+  var v=document.getElementById("regtoken").value.trim();
+  if(v.length<20){alert("토큰이 너무 짧아요. 다시 확인해 주세요.");return}
+  try{localStorage.setItem("qsb_pat",v)}catch(e){alert("이 브라우저는 저장을 지원하지 않아요.");return}
+  qsbShow();
+}
+function qsbForget(){ try{localStorage.removeItem("qsb_pat")}catch(e){} qsbShow(); }
+var qsbK="buy";
+function qsbKind(k){
+  qsbK=k;
+  document.querySelectorAll("#regseg button").forEach(function(b){b.className=(b.dataset.k===k)?"on":""});
+  var cap=(k==="capital");
+  document.getElementById("f-ticker").style.display=cap?"none":"block";
+  document.getElementById("f-qty").style.display=cap?"none":"block";
+  document.getElementById("pricelabel").textContent=cap?"투자금 ($)":"체결가 ($)";
+  document.getElementById("regbtn").textContent=({buy:"매수 등록하기",sell:"매도 등록하기",capital:"투자금 설정하기"})[k];
+}
+function qsbMsg(cls,txt){ var m=document.getElementById("regmsg"); m.className="regmsg "+cls; m.textContent=txt; }
+function qsbSubmit(){
+  var price=document.getElementById("regprice").value.trim();
+  var qty=document.getElementById("regqty").value.trim();
+  var tk=document.getElementById("regticker").value;
+  if(!price||isNaN(price)){qsbMsg("err","가격을 숫자로 입력해 주세요.");return}
+  if(qsbK!=="capital"&&(!qty||isNaN(qty)||parseInt(qty)<1)){qsbMsg("err","수량을 입력해 주세요.");return}
+  var btn=document.getElementById("regbtn"); btn.disabled=true;
+  qsbMsg("ok","보내는 중...");
+  fetch("https://api.github.com/repos/"+QSB_REPO+"/actions/workflows/"+QSB_WF+"/dispatches",{
+    method:"POST",
+    headers:{"Authorization":"Bearer "+qsbTok(),"Accept":"application/vnd.github+json","Content-Type":"application/json"},
+    body:JSON.stringify({ref:"main",inputs:{kind:qsbK,ticker:tk,qty:qty||"0",price:price}})
+  }).then(function(r){
+    btn.disabled=false;
+    if(r.status===204){qsbMsg("ok","✅ 등록 요청을 보냈어요. 1~2분 뒤 Slack 확인 알림이 와요.");
+      document.getElementById("regqty").value="";document.getElementById("regprice").value="";}
+    else if(r.status===401){qsbMsg("err","토큰이 만료됐거나 잘못됐어요. 연결 해제 후 다시 연결해 주세요.")}
+    else if(r.status===404){qsbMsg("err","권한이 부족해요. 토큰의 Actions 권한이 Read and write인지 확인해 주세요.")}
+    else{qsbMsg("err","실패했어요 (코드 "+r.status+"). 잠시 후 다시 시도해 주세요.")}
+  }).catch(function(){
+    btn.disabled=false;
+    qsbMsg("err","여기서는 등록할 수 없어요. 대시보드 원본 주소(swy2030.github.io/trbot-board)에서 해주세요.");
+  });
+}
+qsbShow(); qsbKind("buy");
+</script>
 </section>
 
 <section class="card">
@@ -322,6 +436,6 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
 </section>
 
 <div id="tip" class="num"></div>
-<footer>생성 2026-07-11 09:52 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
+<footer>생성 2026-07-11 11:14 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
 이 화면은 전략 검증용이고 투자 권유가 아니에요 · 3배 레버리지 ETF는 손실이 빠르게 커질 수 있어요</footer>
 </div></body></html>
