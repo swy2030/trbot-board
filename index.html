@@ -160,6 +160,9 @@ details[open] summary::after{transform:rotate(180deg)}
 .jlist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .principle{background:var(--accent-tint);border-radius:14px;padding:11px 13px;
   font-size:13.5px;line-height:1.7;color:var(--ink)}
+.poscard{margin-top:10px;background:var(--accent-tint);border-radius:13px;padding:11px 13px;
+  font-size:13.5px;line-height:1.7;color:var(--ink)}
+.poscard b{font-weight:800}
 .preview{margin-top:10px;background:var(--chip);border-radius:12px;padding:11px 13px;
   font-size:13.5px;line-height:1.7;color:var(--sub);display:none}
 .preview b{color:var(--ink)}
@@ -287,12 +290,13 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10.5px;fil
   </div>
   <div class="formrow">
     <div class="field" id="f-ticker"><label>종목</label>
-      <select id="regticker" onchange="qsbFill()"><option value="SOXL">SOXL · 보유 10주</option><option value="TQQQ">TQQQ · 보유 20주</option><option value="FAS">FAS</option><option value="UPRO">UPRO</option></select></div>
+      <select id="regticker" onchange="qsbFill()"><option value="SOXL">SOXL</option><option value="TQQQ">TQQQ</option><option value="FAS">FAS</option><option value="UPRO">UPRO</option></select></div>
     <div class="field" id="f-qty"><label>수량 (주)</label>
       <input id="regqty" inputmode="numeric" placeholder="10" oninput="qsbPreview()"></div>
     <div class="field full" id="f-price"><label id="pricelabel">체결가 ($)</label>
       <input id="regprice" inputmode="decimal" placeholder="88.40" oninput="qsbPreview()"></div>
   </div>
+  <div class="poscard" id="poscard" style="display:none"></div>
   <div class="chipbtns" id="regchips"></div>
   <div class="field full" id="f-reason" style="margin-top:10px"><label id="reasonlabel">근거 (일지)</label>
     <div class="chipbtns" style="margin-top:2px" id="reasonchips"></div></div>
@@ -310,7 +314,7 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10.5px;fil
 
 <script>
 var QSB_REPO="swy2030/TRBot", QSB_WF="register.yml";
-var QSB_INFO={"cap": 200000.0, "wcap": 0.2, "risk": 0.015, "maxheat": 0.045, "tk": {"SOXL": {"px": 135.47, "rq": 45, "oneR": 66.2209, "status": "signal", "held": 10, "avg": 133.5, "trim": 0}, "TQQQ": {"px": 67.53, "rq": 319, "oneR": 9.3933, "status": "signal", "held": 20, "avg": 67.31, "trim": 0}, "UPRO": {"px": 139.05, "rq": 288, "oneR": 9.4847, "status": "near", "held": 0, "avg": 0.0, "trim": 0}, "FAS": {"px": 168.42, "rq": 241, "oneR": 12.4141, "status": "near", "held": 0, "avg": 0.0, "trim": 0}}};
+var QSB_INFO={"cap": 200000.0, "wcap": 0.2, "risk": 0.015, "maxheat": 0.045, "tk": {"SOXL": {"px": 135.47, "rq": 45, "oneR": 66.2209, "status": "signal", "held": 10, "avg": 133.5, "stop": 67.28, "trim": 0}, "TQQQ": {"px": 67.53, "rq": 319, "oneR": 9.3933, "status": "signal", "held": 20, "avg": 67.31, "stop": 57.92, "trim": 0}, "UPRO": {"px": 139.05, "rq": 288, "oneR": 9.4847, "status": "near", "held": 0, "avg": 0.0, "stop": 0.0, "trim": 0}, "FAS": {"px": 168.42, "rq": 241, "oneR": 12.4141, "status": "near", "held": 0, "avg": 0.0, "stop": 0.0, "trim": 0}}};
 var QSB_TAGS={"basis": ["규칙신호", "장중선행", "재량"], "sell": ["손절", "추세이탈", "시간손절", "익절", "재량"], "moods": ["차분", "확신", "불안", "조급", "공포", "흥분"]};
 var qsbReason="", qsbMood="";
 function qsbTagBtns(el,list,cur,fn){
@@ -336,52 +340,84 @@ function qsbChips(list){
   }).join("");
 }
 function qsbSet(id,v){ document.getElementById(id).value=v; qsbPreview(); }
+function qsbAddable(t){ return Math.max((t.rq||0)-(t.held||0),0); }
+function qsbPos(){
+  var t=qsbT(), el=document.getElementById("poscard");
+  if(!t||qsbK==="capital"){ el.style.display="none"; return; }
+  if(t.held>0){
+    var upnl=(t.px-t.avg)*t.held, s=upnl>=0?"+":"−";
+    var html="지금 <b>"+t.held+"주</b> 갖고 있어요 · 평균 매수가 <b>"+t.avg.toFixed(2)+"$</b>"
+      +" · 현재 "+t.px.toFixed(2)+"$ <b class='"+(upnl>=0?"pnl-up":"pnl-down")+"'>("+s+Math.abs(upnl).toFixed(2)+"$)</b>";
+    if(qsbK==="sell"&&t.stop) html+="<br>손절가는 <b>"+t.stop.toFixed(2)+"$</b>예요";
+    if(qsbK==="buy") html+="<br>"+(qsbAddable(t)>0
+      ?"규칙상 <b>"+qsbAddable(t)+"주</b>까지 더 살 수 있어요 (규칙 수량 "+t.rq+"주 − 보유 "+t.held+"주)"
+      :"규칙상 추가 매수 여력이 없어요 — 그래도 등록은 할 수 있어요");
+    el.innerHTML=html; el.style.display="block";
+  } else if(qsbK==="sell"){
+    el.innerHTML="이 종목은 등록된 보유가 없어요 — 먼저 매수를 등록해 주세요.";
+    el.style.display="block";
+  } else { el.style.display="none"; }
+}
 function qsbFill(){
   var t=qsbT(), q=document.getElementById("regqty"), p=document.getElementById("regprice"), chips=[];
+  var btn=document.getElementById("regbtn");
+  btn.disabled=false;
   if(t){
     p.placeholder=t.px?t.px.toFixed(2):"88.40";
     if(qsbK==="buy"){
-      q.placeholder=t.rq>0?String(t.rq):"규칙상 0";
-      if(t.rq>0) chips.push(["규칙 수량 "+t.rq+"주","regqty",String(t.rq)]);
+      if(t.held>0){                       // 추가 매수 — 남은 규칙 여력 기준
+        var add=qsbAddable(t);
+        q.placeholder=add>0?String(add):"여력 0";
+        if(add>0) chips.push(["추가 가능 "+add+"주","regqty",String(add)]);
+      }else{                              // 신규 매수 — 규칙 수량 기준
+        q.placeholder=t.rq>0?String(t.rq):"규칙상 0";
+        if(t.rq>0) chips.push(["규칙 수량 "+t.rq+"주","regqty",String(t.rq)]);
+      }
       if(t.px) chips.push(["최근 종가 "+t.px.toFixed(2)+"$","regprice",t.px.toFixed(2)]);
     }else if(qsbK==="sell"){
       q.placeholder=t.held>0?String(t.held):"보유 없음";
       if(t.held>0){
-        chips.push(["보유 전량 "+t.held+"주","regqty",String(t.held)]);
-        if(t.trim>0) chips.push(["가이드 수량 "+t.trim+"주","regqty",String(t.trim)]);
+        chips.push(["전량 "+t.held+"주","regqty",String(t.held)]);
+        if(t.trim>0&&t.trim<t.held) chips.push(["가이드 수량 "+t.trim+"주","regqty",String(t.trim)]);
+        if(t.px) chips.push(["최근 종가 "+t.px.toFixed(2)+"$","regprice",t.px.toFixed(2)]);
+      }else{
+        btn.disabled=true;                // 보유 없는 매도는 실수 — 미리 막음
       }
-      if(t.px) chips.push(["최근 종가 "+t.px.toFixed(2)+"$","regprice",t.px.toFixed(2)]);
     }
   }
   if(qsbK==="capital"&&QSB_INFO.cap) chips.push(["현재 투자금 "+QSB_INFO.cap.toLocaleString()+"$","regprice",String(QSB_INFO.cap)]);
-  qsbChips(chips); qsbPreview();
+  qsbPos(); qsbChips(chips); qsbPreview();
 }
 function qsbPreview(){
   var pv=document.getElementById("regpv"), t=qsbT(), out=[];
   var qty=qsbNum("regqty"), px=qsbNum("regprice"), cap=QSB_INFO.cap||0;
   if(t&&qsbK==="buy"){
-    if(t.held>0) out.push("이미 <b>"+t.held+"주</b> 보유 중 · 평균 매수가 <b>"+t.avg.toFixed(2)+"$</b> — "
-      +"여기는 <b>추가 매수</b>를 등록하는 화면이에요. 흐린 숫자는 입력값이 아니라 안내값(규칙 수량·최근 종가)이에요.");
     if(t.status!=="signal") out.push('<span class="pv-warn">지금은 이 종목 진입 신호가 없어요 (등록 자체는 가능해요)</span>');
     if(qty&&px){
-      var amt=qty*px, w=cap>0?amt/cap:0;
-      var line="<b>"+qty+"주 × "+px.toFixed(2)+"$ = "+Math.round(amt).toLocaleString()+"$</b>";
-      if(cap>0) line+=" · 계좌의 "+(w*100).toFixed(0)+"%"+(w>QSB_INFO.wcap+1e-9?' <span class="pv-bad">(상한 '+(QSB_INFO.wcap*100).toFixed(0)+'% 초과)</span>':"");
-      out.push(line);
+      var amt=qty*px;
+      var newQty=(t.held||0)+qty;
+      var newAvg=t.held>0?((t.held*t.avg+qty*px)/newQty):px;
+      var w=cap>0?(newQty*px)/cap:0;
+      out.push("<b>"+qty+"주 × "+px.toFixed(2)+"$ = "+Math.round(amt).toLocaleString()+"$</b> 들어가요");
+      if(t.held>0) out.push("매수 후: 총 <b>"+newQty+"주</b> · 새 평균 매수가 <b>"+newAvg.toFixed(2)+"$</b>"+
+        (cap>0?" · 계좌의 "+(w*100).toFixed(1)+"%":""));
+      else if(cap>0) out.push("계좌의 "+(w*100).toFixed(1)+"%를 쓰게 돼요");
+      if(cap>0&&w>QSB_INFO.wcap+1e-9) out.push('<span class="pv-bad">종목당 한도('+(QSB_INFO.wcap*100).toFixed(0)+'%)를 넘어요</span>');
       if(t.oneR&&cap>0){
-        var loss=qty*t.oneR, lp=loss/cap;
-        out.push("손절까지 밀리면 −"+Math.round(loss).toLocaleString()+"$ ("+(lp*100).toFixed(1)+"%"+
+        var loss=newQty*t.oneR, lp=loss/cap;
+        out.push("이대로 손절까지 밀리면 −"+Math.round(loss).toLocaleString()+"$ ("+(lp*100).toFixed(1)+"%"+
           (lp>QSB_INFO.risk+1e-9?' <span class="pv-bad">— 계획 '+(QSB_INFO.risk*100).toFixed(1)+'%보다 커요</span>':"")+")");
       }
-      if(typeof t.rq==="number"&&qty>t.rq) out.push('<span class="pv-bad">규칙 수량('+t.rq+'주)보다 많아요 — 등록하면 검토 의견이 같이 와요</span>');
+      var limit=t.held>0?qsbAddable(t):t.rq;
+      if(typeof limit==="number"&&qty>limit) out.push('<span class="pv-bad">규칙상 '+(t.held>0?"추가 가능":"매수")+' 수량('+limit+'주)보다 많아요 — 등록하면 검토 의견이 같이 와요</span>');
     }
-  }else if(t&&qsbK==="sell"){
-    if(t.held>0) out.push("보유 <b>"+t.held+"주</b> · 평균 매수가 <b>"+t.avg.toFixed(2)+"$</b>");
-    else out.push('<span class="pv-warn">등록된 보유가 없어요 — 먼저 매수를 등록해 주세요</span>');
-    if(qty&&t.held>0&&qty>t.held) out.push('<span class="pv-bad">보유('+t.held+'주)보다 많아요</span>');
-    if(qty&&px&&t.held>0){
-      var pnl=(px-t.avg)*qty, s=pnl>=0?"+":"−";
-      out.push("예상 실현손익 <b>"+s+Math.abs(pnl).toFixed(2)+"$</b> (평균단가 기준)");
+  }else if(t&&qsbK==="sell"&&t.held>0){
+    if(qty&&qty>t.held) out.push('<span class="pv-bad">보유('+t.held+'주)보다 많아요</span>');
+    if(qty&&px&&qty<=t.held){
+      var pnl=(px-t.avg)*qty, s=pnl>=0?"+":"−", remain=t.held-qty;
+      out.push("예상 실현손익 <b class='"+(pnl>=0?"pnl-up":"pnl-down")+"'>"+s+Math.abs(pnl).toFixed(2)+"$</b> (평균단가 기준)");
+      out.push(remain>0?("매도 후 <b>"+remain+"주</b>가 남아요 — 남는 수량은 매도 규칙 그대로 관리돼요")
+                       :"<b>전량 청산</b>이에요 — 이 종목 기록이 완결 매매로 일지에 집계돼요");
     }
   }
   pv.innerHTML=out.join("<br>");
@@ -624,7 +660,7 @@ qsbShow(); qsbKind("buy");
 </section>
 
 <div id="tip" class="num"></div>
-<footer>마지막 갱신 2026-07-18 09:57 · 시세는 액면분할을 반영한 수정 주가예요 · 데이터 이상 감시: 정상<br>
+<footer>마지막 갱신 2026-07-18 10:07 · 시세는 액면분할을 반영한 수정 주가예요 · 데이터 이상 감시: 정상<br>
 가상 체결에는 불리한 조건(체결 오차 0.10%)을 미리 반영해 계산해요<br>
 이 화면은 개인 기록용이고 투자 권유가 아니에요 · 3배 레버리지 ETF는 손실이 빠르게 커질 수 있어요</footer>
 </div></body></html>
