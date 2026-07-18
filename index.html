@@ -133,7 +133,27 @@ details[open] summary::after{transform:rotate(180deg)}
 .dbody dt{font-weight:700;margin-top:9px;color:var(--ink)}
 .dbody dd{margin:2px 0 0 0}
 
+/* 전략 검토 · 분할 가이드 */
+.review{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.rv{font-size:12.5px;line-height:1.55;color:var(--sub);display:flex;gap:6px}
+.rv .ic{flex:none}
+.rv.bad{color:var(--danger);font-weight:600}
+.rv.warn{color:var(--warn);font-weight:600}
+.rv.guide{background:var(--accent-tint);color:var(--ink);border-radius:10px;padding:8px 10px;font-weight:600;display:block}
+.rvport{border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.6;margin:0 0 10px}
+.rvport.bad{background:var(--danger-tint);color:var(--danger);font-weight:700}
+.rvport.warn{background:var(--warn-tint);color:var(--warn);font-weight:700}
+.rvport.ok{background:var(--chip);color:var(--sub);font-weight:600}
+
 /* 빠른 등록 폼 */
+.chipbtns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chipbtn{border:0;background:var(--chip);color:var(--sub);font-weight:700;font-size:12.5px;
+  padding:7px 12px;border-radius:99px;cursor:pointer;font-family:inherit}
+.preview{margin-top:10px;background:var(--chip);border-radius:12px;padding:10px 12px;
+  font-size:12.5px;line-height:1.7;color:var(--sub);display:none}
+.preview b{color:var(--ink)}
+.preview .pv-bad{color:var(--danger);font-weight:700}
+.preview .pv-warn{color:var(--warn);font-weight:700}
 .seg{display:flex;background:var(--chip);border-radius:12px;padding:3px;gap:3px}
 .seg button{flex:1;border:0;background:none;color:var(--muted);font-weight:700;font-size:13.5px;
   padding:9px 0;border-radius:10px;cursor:pointer;font-family:inherit;letter-spacing:-.01em}
@@ -171,7 +191,27 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
 
 <section class="card">
   <h2>내 종목 <span class="cnt">실제로 산 것들</span></h2>
-  <div class="empty">아직 등록한 매수가 없어요.<br>실제로 매수하면 <code>python -m scripts.live buy TQQQ 10 88.40</code>처럼 등록하세요.<br>등록하는 순간 손절가·익절 기준·기한을 계산해서 여기서 관리해 드려요.</div><div style="margin-top:14px"><div class="note" style="margin-bottom:4px">내 자산이 이렇게 움직였어요 (수익률 <b class="num">+0.00%</b> · 점선이 원금이에요)</div>
+  <p class="note" style="margin:0 0 10px">투자금 <b class="num">3,000$</b> 기준이에요 · 지금까지 확정한 손익 <span class="pnl-flat num">±0.00$</span> · 미국장 시간엔 30분마다 손절가 접근을 지켜보고 알려 드려요</p><div class="rvport bad">전략 규칙과 다른 부분이 있어요 — 각 종목의 가이드를 참고하세요<div class="rv bad" style="color:inherit"><span class="ic">❌</span><span>같은 그룹(G1) 2종목 동시 보유 — 규칙은 그룹당 1종목. 규칙대로면 RSI가 더 낮았던 TQQQ만 들어가고 SOXL는 안 삼</span></div><div class="rv bad" style="color:inherit"><span class="ic">❌</span><span>전 종목 동시 손절 시 손실 850$ = 계좌의 28.3% (한도 4.5%)</span></div></div><div class="stocklist">
+<div class="stock">
+  <div class="head"><span class="tk">SOXL<span class="sec">반도체</span></span>
+  <span class="pill wait num">10주 · 7/17(금) 체결</span></div>
+  <div class="big num pnl-up">+19.70$ <span style="font-size:14px">(+1.48%)</span></div>
+  
+  <div class="kv"><div class="cell"><div class="k">평균 매수가</div><div class="v num">133.50$</div></div><div class="cell"><div class="k">현재가</div><div class="v num">135.47$</div></div><div class="cell"><div class="k">평가금액</div><div class="v num">1,355$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">67.28$</div></div></div>
+  <div class="sub">지금 판다면 손절가까지 <b class="num">-50.3%</b> 여유가 있어요 · 계좌의 <b class='num'>45%</b> (상한 20%)</div>
+  <div class="review"><div class="rv ok"><span class="ic">✅</span><span>진입 신호 유효 — 체결일 RSI(2) 7.8 (기준 10 미만) · 200일선 위</span></div><div class="rv bad"><span class="ic">❌</span><span>이 계좌 크기로는 규칙상 못 사는 종목 — 1주 손실이 계좌의 2.2% (허용 2.0%). 10주 보유 → 손절 시 −662$ = 계좌의 22.1%</span></div><div class="rv bad"><span class="ic">❌</span><span>비중 초과 — 계좌의 44% (상한 20%)</span></div><div class="rv guide">▸ <b>분할 매도 가이드</b> — 규칙 정합은 전량 정리(10주 매도)임 — 유지를 택한다면 손절선을 반드시 지키고, 반등 시 20일선 익절 전이라도 나눠 팔아 리스크를 줄이는 게 안전함</div></div>
+  <div class="plan"><div class="step"><span class="n">1</span><span>손절가 <b class='num'>67.28$</b>를 깨면 → 바로 팔아요 <span style='opacity:.75'>(갭 하락 출발이면 시가에)</span></span></div><div class="step"><span class="n">2</span><span>SOXX가 200일선(<span class='num'>390.60</span>) 아래로 마감하면 → 팔아요</span></div><div class="step"><span class="n">3</span><span>5거래일이 지나면 → 종가에 정리해요 — 지금 0일째, <b>5일</b> 남았어요</span></div><div class="step"><span class="n">4</span><span>SOXX가 20일선(<span class='num'>586.15</span>)에 닿으면 → 전부 <b>익절</b>해요</span></div><div class="step"><span class="n" style="background:none">·</span><span style="font-size:12px;opacity:.8">위에서부터 순서대로 확인하고, 먼저 걸리는 하나로 팔아요</span></div></div>
+</div>
+<div class="stock">
+  <div class="head"><span class="tk">TQQQ<span class="sec">나스닥100</span></span>
+  <span class="pill wait num">20주 · 7/17(금) 체결</span></div>
+  <div class="big num pnl-up">+4.40$ <span style="font-size:14px">(+0.33%)</span></div>
+  
+  <div class="kv"><div class="cell"><div class="k">평균 매수가</div><div class="v num">67.31$</div></div><div class="cell"><div class="k">현재가</div><div class="v num">67.53$</div></div><div class="cell"><div class="k">평가금액</div><div class="v num">1,351$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">57.92$</div></div></div>
+  <div class="sub">지금 판다면 손절가까지 <b class="num">-14.2%</b> 여유가 있어요 · 계좌의 <b class='num'>45%</b> (상한 20%)</div>
+  <div class="review"><div class="rv ok"><span class="ic">✅</span><span>진입 신호 유효 — 체결일 RSI(2) 6.7 (기준 10 미만) · 200일선 위</span></div><div class="rv bad"><span class="ic">❌</span><span>수량 초과 — 규칙 수량 4주인데 20주 보유. 손절 시 −188$ = 계좌의 6.3% (계획은 1.5%)</span></div><div class="rv bad"><span class="ic">❌</span><span>비중 초과 — 계좌의 45% (상한 20%)</span></div><div class="rv guide">▸ <b>분할 매도 가이드</b> — 16주를 나눠 팔면 규칙 수량(4주)으로 돌아옴 — 이후 손절 시 손실 1.3%로 축소. 남는 수량은 기존 4단계 매도 규칙 그대로 적용</div></div>
+  <div class="plan"><div class="step"><span class="n">1</span><span>손절가 <b class='num'>57.92$</b>를 깨면 → 바로 팔아요 <span style='opacity:.75'>(갭 하락 출발이면 시가에)</span></span></div><div class="step"><span class="n">2</span><span>QQQ가 200일선(<span class='num'>639.53</span>) 아래로 마감하면 → 팔아요</span></div><div class="step"><span class="n">3</span><span>5거래일이 지나면 → 종가에 정리해요 — 지금 0일째, <b>5일</b> 남았어요</span></div><div class="step"><span class="n">4</span><span>QQQ가 20일선(<span class='num'>718.30</span>)에 닿으면 → 전부 <b>익절</b>해요</span></div><div class="step"><span class="n" style="background:none">·</span><span style="font-size:12px;opacity:.8">위에서부터 순서대로 확인하고, 먼저 걸리는 하나로 팔아요</span></div></div>
+</div></div><div style="margin-top:14px"><div class="note" style="margin-bottom:4px">내 자산이 이렇게 움직였어요 (수익률 <b class="num">+0.00%</b> · 점선이 원금이에요)</div>
 <svg viewBox="0 0 600 130" width="100%" role="img" aria-label="내 실거래 자산 추이" id="livechart" style="touch-action:none">
   <line x1="8" y1="108" x2="592" y2="108" stroke="var(--line)" stroke-width="1"/>
   <line x1="8" y1="60.0" x2="592" y2="60.0" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3" opacity="0.7"/><text x="8" y="56.0">원금</text>
@@ -236,21 +276,81 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
   </div>
   <div class="formrow">
     <div class="field" id="f-ticker"><label>종목</label>
-      <select id="regticker"><option>TQQQ</option><option>SOXL</option><option>UPRO</option><option>FAS</option></select></div>
+      <select id="regticker" onchange="qsbFill()"><option value="SOXL">SOXL · 보유 10주</option><option value="TQQQ">TQQQ · 보유 20주</option><option value="FAS">FAS</option><option value="UPRO">UPRO</option></select></div>
     <div class="field" id="f-qty"><label>수량 (주)</label>
-      <input id="regqty" inputmode="numeric" placeholder="10"></div>
+      <input id="regqty" inputmode="numeric" placeholder="10" oninput="qsbPreview()"></div>
     <div class="field full" id="f-price"><label id="pricelabel">체결가 ($)</label>
-      <input id="regprice" inputmode="decimal" placeholder="88.40"></div>
+      <input id="regprice" inputmode="decimal" placeholder="88.40" oninput="qsbPreview()"></div>
   </div>
+  <div class="chipbtns" id="regchips"></div>
+  <div class="preview" id="regpv"></div>
   <button class="btn" id="regbtn" onclick="qsbSubmit()">등록하기</button>
   <div class="regmsg" id="regmsg"></div>
-  <p class="note" style="margin:10px 0 0">등록하면 1~2분 안에 손절가·익절 기준을 계산해서
-  Slack으로 알려 드리고, 이 화면도 새로 발행돼요.
+  <p class="note" style="margin:10px 0 0">등록하면 1~2분 안에 전략 검토 의견(신호·수량·비중)과
+  손절가·익절 기준을 계산해서 Slack으로 알려 드리고, 이 화면도 새로 발행돼요.
   <a href="#" onclick="qsbForget();return false" style="color:var(--muted)">연결 해제</a></p>
 </div>
 
 <script>
 var QSB_REPO="swy2030/TRBot", QSB_WF="register.yml";
+var QSB_INFO={"cap": 3000.0, "wcap": 0.2, "risk": 0.015, "maxheat": 0.045, "tk": {"SOXL": {"px": 135.47, "rq": 0, "oneR": 66.2209, "status": "signal", "held": 10, "avg": 133.5, "trim": 10}, "TQQQ": {"px": 67.53, "rq": 4, "oneR": 9.3933, "status": "signal", "held": 20, "avg": 67.31, "trim": 16}, "UPRO": {"px": 139.05, "rq": 4, "oneR": 9.4847, "status": "near", "held": 0, "avg": 0.0, "trim": 0}, "FAS": {"px": 168.42, "rq": 3, "oneR": 12.4141, "status": "near", "held": 0, "avg": 0.0, "trim": 0}}};
+function qsbT(){ return (QSB_INFO.tk||{})[document.getElementById("regticker").value]||null; }
+function qsbNum(id){ var v=document.getElementById(id).value.trim(); return v&&!isNaN(v)?parseFloat(v):null; }
+function qsbChips(list){
+  document.getElementById("regchips").innerHTML=list.map(function(c){
+    return '<button type="button" class="chipbtn" onclick="qsbSet(\''+c[1]+'\',\''+c[2]+'\')">'+c[0]+'</button>';
+  }).join("");
+}
+function qsbSet(id,v){ document.getElementById(id).value=v; qsbPreview(); }
+function qsbFill(){
+  var t=qsbT(), q=document.getElementById("regqty"), p=document.getElementById("regprice"), chips=[];
+  if(t){
+    p.placeholder=t.px?t.px.toFixed(2):"88.40";
+    if(qsbK==="buy"){
+      q.placeholder=t.rq>0?String(t.rq):"규칙상 0";
+      if(t.rq>0) chips.push(["규칙 수량 "+t.rq+"주","regqty",String(t.rq)]);
+      if(t.px) chips.push(["최근 종가 "+t.px.toFixed(2)+"$","regprice",t.px.toFixed(2)]);
+    }else if(qsbK==="sell"){
+      q.placeholder=t.held>0?String(t.held):"보유 없음";
+      if(t.held>0){
+        chips.push(["보유 전량 "+t.held+"주","regqty",String(t.held)]);
+        if(t.trim>0) chips.push(["가이드 수량 "+t.trim+"주","regqty",String(t.trim)]);
+      }
+      if(t.px) chips.push(["최근 종가 "+t.px.toFixed(2)+"$","regprice",t.px.toFixed(2)]);
+    }
+  }
+  if(qsbK==="capital"&&QSB_INFO.cap) chips.push(["현재 투자금 "+QSB_INFO.cap.toLocaleString()+"$","regprice",String(QSB_INFO.cap)]);
+  qsbChips(chips); qsbPreview();
+}
+function qsbPreview(){
+  var pv=document.getElementById("regpv"), t=qsbT(), out=[];
+  var qty=qsbNum("regqty"), px=qsbNum("regprice"), cap=QSB_INFO.cap||0;
+  if(t&&qsbK==="buy"){
+    if(t.status!=="signal") out.push('<span class="pv-warn">지금은 이 종목 진입 신호가 없어요 (등록 자체는 가능해요)</span>');
+    if(qty&&px){
+      var amt=qty*px, w=cap>0?amt/cap:0;
+      var line="<b>"+qty+"주 × "+px.toFixed(2)+"$ = "+Math.round(amt).toLocaleString()+"$</b>";
+      if(cap>0) line+=" · 계좌의 "+(w*100).toFixed(0)+"%"+(w>QSB_INFO.wcap+1e-9?' <span class="pv-bad">(상한 '+(QSB_INFO.wcap*100).toFixed(0)+'% 초과)</span>':"");
+      out.push(line);
+      if(t.oneR&&cap>0){
+        var loss=qty*t.oneR, lp=loss/cap;
+        out.push("손절까지 밀리면 −"+Math.round(loss).toLocaleString()+"$ ("+(lp*100).toFixed(1)+"%"+
+          (lp>QSB_INFO.risk+1e-9?' <span class="pv-bad">— 계획 '+(QSB_INFO.risk*100).toFixed(1)+'%보다 커요</span>':"")+")");
+      }
+      if(typeof t.rq==="number"&&qty>t.rq) out.push('<span class="pv-bad">규칙 수량('+t.rq+'주)보다 많아요 — 등록하면 검토 의견이 같이 와요</span>');
+    }
+  }else if(t&&qsbK==="sell"){
+    if(t.held>0) out.push("보유 <b>"+t.held+"주</b> · 평균 매수가 <b>"+t.avg.toFixed(2)+"$</b>");
+    else out.push('<span class="pv-warn">등록된 보유가 없어요 — 먼저 매수를 등록해 주세요</span>');
+    if(qty&&t.held>0&&qty>t.held) out.push('<span class="pv-bad">보유('+t.held+'주)보다 많아요</span>');
+    if(qty&&px&&t.held>0){
+      var pnl=(px-t.avg)*qty, s=pnl>=0?"+":"−";
+      out.push("예상 실현손익 <b>"+s+Math.abs(pnl).toFixed(2)+"$</b> (평균단가 기준)");
+    }
+  }
+  pv.innerHTML=out.join("<br>");
+  pv.style.display=out.length?"block":"none";
+}
 function qsbTok(){ try{return localStorage.getItem("qsb_pat")||""}catch(e){return ""} }
 function qsbShow(){
   var t=qsbTok();
@@ -273,6 +373,7 @@ function qsbKind(k){
   document.getElementById("f-qty").style.display=cap?"none":"block";
   document.getElementById("pricelabel").textContent=cap?"투자금 ($)":"체결가 ($)";
   document.getElementById("regbtn").textContent=({buy:"매수 등록하기",sell:"매도 등록하기",capital:"투자금 설정하기"})[k];
+  qsbFill();
 }
 function qsbMsg(cls,txt){ var m=document.getElementById("regmsg"); m.className="regmsg "+cls; m.textContent=txt; }
 function qsbSubmit(){
@@ -334,7 +435,7 @@ qsbShow(); qsbKind("buy");
   <div class="head"><span class="tk">FAS<span class="sec">금융 3배 · 신호는 XLF 기준</span></span>
   <span class="pill near">조건 근접</span></div>
   <div class="cond">XLF가 <b class='num'>55.42</b> 아래로 마감하면 → <b>사요</b>. 지금보다 <b class='num'>1.5%</b> 더 내려야 해요.</div>
-  <div class="kv"><div class="cell"><div class="k">사는 수량</div><div class="v num">3주</div></div><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈160.84$</div></div><div class="cell"><div class="k">들어가는 돈</div><div class="v num">≈483$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈148.45$</div></div></div>
+  <div class="kv"><div class="cell"><div class="k">사는 수량</div><div class="v num">3주</div></div><div class="cell"><div class="k">예상 매수가</div><div class="v num">≈160.84$</div></div><div class="cell"><div class="k">들어가는 돈</div><div class="v num">≈483$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">≈148.43$</div></div></div>
   <div class="sub">손절가까지 밀려도 잃는 돈은 <b class='num'>37$</b>(계좌의 1.2%)예요. 수량이 이 한도에 맞춰 계산된 거예요.</div>
   <div class="sub">단기 과매도 지표 RSI(2)가 <b class='num'>32.7</b>이에요 (기준: 10 미만) · 200일선보다 <b class='num'>+7.6%</b> 위에 있어요</div>
 </div></div><p class="note" style="margin:10px 0 0">여러 종목이 동시에 조건을 채우면 과매도가 더 깊은(RSI 낮은) 순서로 최대 3종목만 사요. 사면 5거래일 안에 결판을 내는 단기 전략이에요.</p>
@@ -477,6 +578,6 @@ qsbShow(); qsbKind("buy");
 </section>
 
 <div id="tip" class="num"></div>
-<footer>생성 2026-07-17 23:10 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
+<footer>생성 2026-07-18 09:06 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
 이 화면은 전략 검증용이고 투자 권유가 아니에요 · 3배 레버리지 ETF는 손실이 빠르게 커질 수 있어요</footer>
 </div></body></html>
