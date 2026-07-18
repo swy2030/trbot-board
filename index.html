@@ -1,10 +1,12 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"></head><body><title>QuantSignalBot</title>
 <style>
+/* 가독성 좋은 한글 폰트(Pretendard) — 로드 실패 시 시스템 폰트로 자연 대체됨 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 :root{
   --bg:#F2F4F6; --surface:#FFFFFF; --ink:#191F28; --sub:#4E5968; --muted:#8B95A1;
   --line:#E5E8EB; --accent:#3182F6; --accent-tint:#E8F3FF;
   --warn:#D9730D; --warn-tint:#FFF3E0; --danger:#F04452; --danger-tint:#FFEBED;
-  --chip:#F2F4F6; --shadow:0 1px 2px rgba(0,0,0,.04);
+  --chip:#F2F4F6; --shadow:0 2px 10px rgba(25,31,40,.05);
   --up:var(--danger); --down:var(--accent);
 }
 @media (prefers-color-scheme: dark){
@@ -19,7 +21,7 @@
   --bg:#F2F4F6; --surface:#FFFFFF; --ink:#191F28; --sub:#4E5968; --muted:#8B95A1;
   --line:#E5E8EB; --accent:#3182F6; --accent-tint:#E8F3FF;
   --warn:#D9730D; --warn-tint:#FFF3E0; --danger:#F04452; --danger-tint:#FFEBED;
-  --chip:#F2F4F6; --shadow:0 1px 2px rgba(0,0,0,.04);
+  --chip:#F2F4F6; --shadow:0 2px 10px rgba(25,31,40,.05);
 }
 :root[data-theme="dark"]{
   --bg:#111215; --surface:#1B1D22; --ink:#E9EAED; --sub:#A8B0BA; --muted:#7A828C;
@@ -29,103 +31,103 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,sans-serif;
-  font-size:14.5px;line-height:1.6;letter-spacing:-.01em;-webkit-text-size-adjust:100%}
-.wrap{max-width:640px;margin:0 auto;padding:14px 14px 56px;display:flex;flex-direction:column;gap:12px}
+  font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  font-size:16px;line-height:1.65;letter-spacing:-.01em;-webkit-text-size-adjust:100%}
+.wrap{max-width:660px;margin:0 auto;padding:16px 16px 64px;display:flex;flex-direction:column;gap:14px}
 .num{font-variant-numeric:tabular-nums}
-code{background:var(--chip);padding:1px 6px;border-radius:6px;font-size:12.5px}
+code{background:var(--chip);padding:1px 6px;border-radius:6px;font-size:13.5px}
 a{color:var(--accent);text-decoration:none}
 
 header.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 4px 0}
-header.top h1{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:0}
-header.top .asof{font-size:12px;color:var(--muted)}
-.badge{display:inline-block;font-size:11px;font-weight:700;vertical-align:2px;margin-left:6px;
-  padding:2px 8px;border-radius:99px;background:var(--accent-tint);color:var(--accent)}
+header.top h1{font-size:17px;font-weight:800;letter-spacing:-.02em;margin:0}
+header.top .asof{font-size:13px;color:var(--muted)}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;vertical-align:2px;margin-left:6px;
+  padding:2px 9px;border-radius:99px;background:var(--accent-tint);color:var(--accent)}
 
-.card{background:var(--surface);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-.card h2{font-size:15px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--ink)}
-.card h2 .cnt{color:var(--muted);font-weight:600;font-size:13px;margin-left:4px}
+.card{background:var(--surface);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+.card h2{font-size:16.5px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--ink)}
+.card h2 .cnt{color:var(--muted);font-weight:600;font-size:13.5px;margin-left:4px}
 
 /* 오늘 한 줄 (히어로) */
-.hero-line{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.4;margin:0}
-.hero-sub{font-size:13.5px;color:var(--sub);margin-top:6px;line-height:1.6}
+.hero-line{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.4;margin:0}
+.hero-sub{font-size:15px;color:var(--sub);margin-top:7px;line-height:1.65}
 .hero-sub b{font-weight:700;color:var(--ink)}
 
 /* 자산 큰 숫자 */
-.money{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
-.money .unit{font-size:15px;color:var(--muted);font-weight:600;margin-left:2px}
-.money-sub{font-size:13.5px;margin-top:4px;color:var(--sub)}
+.money{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.money .unit{font-size:16px;color:var(--muted);font-weight:600;margin-left:2px}
+.money-sub{font-size:15px;margin-top:5px;color:var(--sub)}
 .pnl-up{color:var(--up);font-weight:700}
 .pnl-down{color:var(--down);font-weight:700}
 .pnl-flat{color:var(--muted);font-weight:700}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.chip{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;padding:4px 10px;
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:13.5px;padding:5px 11px;
   border-radius:12px;background:var(--chip);color:var(--sub)}
 .chip b{color:var(--ink);font-weight:700}
 
 /* 종목 카드 */
 .stocklist{display:flex;flex-direction:column;gap:10px}
-.stock{border-radius:14px;background:var(--chip);padding:14px}
+.stock{border-radius:16px;background:var(--chip);padding:16px}
 .stock .head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.stock .tk{font-size:16px;font-weight:800;letter-spacing:-.01em}
-.stock .tk .sec{font-size:12px;color:var(--muted);font-weight:600;margin-left:6px}
-.pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap;flex:none}
+.stock .tk{font-size:17px;font-weight:800;letter-spacing:-.01em}
+.stock .tk .sec{font-size:13px;color:var(--muted);font-weight:600;margin-left:6px}
+.pill{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap;flex:none}
 .pill.signal{background:var(--accent);color:#fff}
 .pill.near{background:var(--warn-tint);color:var(--warn)}
 .pill.wait{background:var(--surface);color:var(--muted)}
-.stock .big{font-size:19px;font-weight:800;margin-top:6px;line-height:1.35}
-.stock .cond{font-size:14.5px;margin-top:6px;line-height:1.55}
+.stock .big{font-size:21px;font-weight:800;margin-top:6px;line-height:1.35}
+.stock .cond{font-size:15.5px;margin-top:7px;line-height:1.6}
 .stock .cond b{font-weight:800}
-.stock .sub{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.6}
+.stock .sub{font-size:13.5px;color:var(--muted);margin-top:7px;line-height:1.6}
 
 /* 할 일 배너 */
-.todo{background:var(--danger-tint);color:var(--danger);font-weight:700;font-size:13.5px;
-  border-radius:10px;padding:9px 12px;margin-top:8px;line-height:1.5}
+.todo{background:var(--danger-tint);color:var(--danger);font-weight:700;font-size:14.5px;
+  border-radius:12px;padding:10px 13px;margin-top:8px;line-height:1.55}
 
 /* 핵심 숫자 그리드 */
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin-top:10px}
-.kv .cell{background:var(--surface);border-radius:10px;padding:8px 10px;min-width:0}
-.kv .k{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kv .v{font-size:14.5px;font-weight:700;margin-top:2px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:7px;margin-top:10px}
+.kv .cell{background:var(--surface);border-radius:12px;padding:9px 11px;min-width:0}
+.kv .k{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv .v{font-size:15.5px;font-weight:700;margin-top:2px}
 
 /* 매도 계획 체크리스트 */
-.plan{margin-top:10px;display:flex;flex-direction:column;gap:5px}
-.plan .step{display:flex;gap:8px;font-size:13px;line-height:1.55;color:var(--sub)}
-.plan .step .n{flex:none;width:17px;height:17px;border-radius:99px;background:var(--surface);
-  color:var(--muted);font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.plan{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.plan .step{display:flex;gap:9px;font-size:14px;line-height:1.6;color:var(--sub)}
+.plan .step .n{flex:none;width:19px;height:19px;border-radius:99px;background:var(--surface);
+  color:var(--muted);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
 .plan .step b{color:var(--ink)}
 .plan .step.hit .n{background:var(--danger);color:#fff}
 .plan .step.hit{color:var(--danger);font-weight:700}
 
 /* 요약 줄 리스트 */
-.lead{display:flex;flex-direction:column;gap:8px}
-.lead .li{display:flex;gap:9px;font-size:13.5px;line-height:1.6;color:var(--sub)}
+.lead{display:flex;flex-direction:column;gap:9px}
+.lead .li{display:flex;gap:10px;font-size:14.5px;line-height:1.65;color:var(--sub)}
 .lead .li .b{width:6px;height:6px;border-radius:99px;margin-top:8px;flex:none;background:var(--line)}
 .lead .li.hot{color:var(--ink)}
 .lead .li.hot .b{background:var(--accent)}
 .lead .li.watch .b{background:var(--warn)}
 
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{color:var(--muted);font-weight:600;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{color:var(--muted);font-weight:600;text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
 tr:last-child td{border-bottom:0}
 .tblwrap{overflow-x:auto}
-.empty{color:var(--sub);font-size:13.5px;line-height:1.7;padding:2px 0}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
-.stat{background:var(--chip);border-radius:12px;padding:11px 12px}
-.stat .k{font-size:11.5px;color:var(--muted)}
-.stat .v{font-size:17px;font-weight:800;margin-top:2px}
-.note{font-size:12.5px;color:var(--muted);line-height:1.65}
+.empty{color:var(--sub);font-size:14.5px;line-height:1.7;padding:2px 0}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px}
+.stat{background:var(--chip);border-radius:14px;padding:12px 13px}
+.stat .k{font-size:12.5px;color:var(--muted)}
+.stat .v{font-size:18px;font-weight:800;margin-top:2px}
+.note{font-size:13.5px;color:var(--muted);line-height:1.65}
 
 details{border-top:1px solid var(--line);margin-top:12px;padding-top:11px}
 details:first-of-type{margin-top:2px}
-summary{cursor:pointer;font-size:13.5px;font-weight:700;color:var(--ink);list-style:none;
+summary{cursor:pointer;font-size:14.5px;font-weight:700;color:var(--ink);list-style:none;
   -webkit-tap-highlight-color:transparent;display:flex;justify-content:space-between;align-items:center}
 summary::-webkit-details-marker{display:none}
 summary::after{content:"↓";color:var(--muted);font-weight:600;transition:transform .15s}
 details[open] summary::after{transform:rotate(180deg)}
-.dbody{margin-top:10px;font-size:13px;line-height:1.75;color:var(--sub)}
-.dbody h4{font-size:13px;margin:12px 0 4px;color:var(--ink)}
+.dbody{margin-top:10px;font-size:14px;line-height:1.75;color:var(--sub)}
+.dbody h4{font-size:14px;margin:12px 0 4px;color:var(--ink)}
 .dbody h4:first-child{margin-top:0}
 .dbody ul{margin:0;padding-left:18px}
 .dbody li{margin:3px 0}
@@ -134,32 +136,32 @@ details[open] summary::after{transform:rotate(180deg)}
 .dbody dd{margin:2px 0 0 0}
 
 /* 전략 검토 · 분할 가이드 */
-.review{margin-top:10px;display:flex;flex-direction:column;gap:5px}
-.rv{font-size:12.5px;line-height:1.55;color:var(--sub);display:flex;gap:6px}
+.review{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.rv{font-size:13.5px;line-height:1.6;color:var(--sub);display:flex;gap:6px}
 .rv .ic{flex:none}
 .rv.bad{color:var(--danger);font-weight:600}
 .rv.warn{color:var(--warn);font-weight:600}
 .rv.guide{background:var(--accent-tint);color:var(--ink);border-radius:10px;padding:8px 10px;font-weight:600;display:block}
-.rvport{border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.6;margin:0 0 10px}
+.rvport{border-radius:14px;padding:11px 13px;font-size:14px;line-height:1.6;margin:0 0 10px}
 .rvport.bad{background:var(--danger-tint);color:var(--danger);font-weight:700}
 .rvport.warn{background:var(--warn-tint);color:var(--warn);font-weight:700}
 .rvport.ok{background:var(--chip);color:var(--sub);font-weight:600}
 
 /* 빠른 등록 폼 */
 .chipbtns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.chipbtn{border:0;background:var(--chip);color:var(--sub);font-weight:700;font-size:12.5px;
-  padding:7px 12px;border-radius:99px;cursor:pointer;font-family:inherit}
+.chipbtn{border:0;background:var(--chip);color:var(--sub);font-weight:700;font-size:13.5px;
+  padding:8px 13px;border-radius:99px;cursor:pointer;font-family:inherit}
 .chipbtn.on{background:var(--accent);color:#fff}
 /* 매매일지 */
-.jrow{border-radius:12px;background:var(--chip);padding:11px 12px;font-size:13px;line-height:1.6}
+.jrow{border-radius:14px;background:var(--chip);padding:12px 13px;font-size:14px;line-height:1.6}
 .jrow .jhead{display:flex;justify-content:space-between;gap:8px;font-weight:700}
-.jrow .jmeta{color:var(--muted);font-size:12px;margin-top:2px}
+.jrow .jmeta{color:var(--muted);font-size:13px;margin-top:2px}
 .jrow .jmemo{margin-top:4px;color:var(--sub)}
 .jlist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-.principle{background:var(--accent-tint);border-radius:12px;padding:10px 12px;
-  font-size:12.5px;line-height:1.7;color:var(--ink)}
-.preview{margin-top:10px;background:var(--chip);border-radius:12px;padding:10px 12px;
-  font-size:12.5px;line-height:1.7;color:var(--sub);display:none}
+.principle{background:var(--accent-tint);border-radius:14px;padding:11px 13px;
+  font-size:13.5px;line-height:1.7;color:var(--ink)}
+.preview{margin-top:10px;background:var(--chip);border-radius:12px;padding:11px 13px;
+  font-size:13.5px;line-height:1.7;color:var(--sub);display:none}
 .preview b{color:var(--ink)}
 .preview .pv-bad{color:var(--danger);font-weight:700}
 .preview .pv-warn{color:var(--warn);font-weight:700}
@@ -169,28 +171,28 @@ details[open] summary::after{transform:rotate(180deg)}
 .seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
 .formrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .formrow .full{grid-column:1/-1}
-.field label{display:block;font-size:11.5px;color:var(--muted);margin:0 0 4px 2px}
+.field label{display:block;font-size:12.5px;color:var(--muted);margin:0 0 4px 2px}
 .field input,.field select{width:100%;border:1.5px solid var(--line);background:var(--surface);
-  color:var(--ink);border-radius:12px;padding:11px 12px;font-size:16px;font-family:inherit;
+  color:var(--ink);border-radius:13px;padding:12px 13px;font-size:16.5px;font-family:inherit;
   font-variant-numeric:tabular-nums;-webkit-appearance:none;appearance:none}
 .field input:focus,.field select:focus{outline:none;border-color:var(--accent)}
-.btn{width:100%;border:0;background:var(--accent);color:#fff;font-weight:800;font-size:15.5px;
-  padding:13px 0;border-radius:14px;cursor:pointer;font-family:inherit;margin-top:12px;letter-spacing:-.01em}
+.btn{width:100%;border:0;background:var(--accent);color:#fff;font-weight:800;font-size:16.5px;
+  padding:14px 0;border-radius:15px;cursor:pointer;font-family:inherit;margin-top:12px;letter-spacing:-.01em}
 .btn:disabled{opacity:.45}
-.btn.ghost{background:var(--chip);color:var(--sub);font-weight:700;font-size:13px;padding:9px 0;border-radius:10px}
-.regmsg{font-size:13.5px;margin-top:10px;line-height:1.6;display:none}
+.btn.ghost{background:var(--chip);color:var(--sub);font-weight:700;font-size:13.5px;padding:9px 0;border-radius:10px}
+.regmsg{font-size:14.5px;margin-top:10px;line-height:1.6;display:none}
 .regmsg.ok{display:block;color:var(--accent);font-weight:700}
 .regmsg.err{display:block;color:var(--danger);font-weight:700}
 
-footer{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.7;margin-top:8px}
+footer{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.75;margin-top:8px}
 #tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--line);
-  border-radius:8px;padding:5px 9px;font-size:12px;display:none;z-index:9;box-shadow:0 2px 8px rgba(0,0,0,.14)}
-svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:var(--muted)}
+  border-radius:8px;padding:5px 9px;font-size:12.5px;display:none;z-index:9;box-shadow:0 2px 8px rgba(0,0,0,.14)}
+svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10.5px;fill:var(--muted)}
 @media (prefers-reduced-motion: reduce){ summary::after{transition:none} }
 </style>
 <div class="wrap">
 <header class="top">
-  <h1>QuantSignalBot<span class="badge">가상매매 검증 중</span></h1>
+  <h1>QuantSignalBot<span class="badge">자동 운영 중</span></h1>
   <span class="asof">미국 7/17(금) 마감</span>
 </header>
 
@@ -200,7 +202,7 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
 
 <section class="card">
   <h2>내 종목 <span class="cnt">실제로 산 것들</span></h2>
-  <p class="note" style="margin:0 0 10px">투자금 <b class="num">200,000$</b> 기준이에요 · 지금까지 확정한 손익 <span class="pnl-flat num">±0.00$</span> · 미국장 시간엔 30분마다 손절가 접근을 지켜보고 알려 드려요</p><div class="rvport bad">전략 규칙과 다른 부분이 있어요 — 각 종목의 가이드를 참고하세요<div class="rv bad" style="color:inherit"><span class="ic">❌</span><span>같은 그룹(G1) 2종목 동시 보유 — 규칙은 그룹당 1종목. 규칙대로면 RSI가 더 낮았던 TQQQ만 들어가고 SOXL는 안 삼</span></div><div class="rv ok" style="color:inherit"><span class="ic">✅</span><span>전 종목 동시 손절 시 손실 850$ = 계좌의 0.4% (한도 4.5%)</span></div></div><div class="stocklist">
+  <p class="note" style="margin:0 0 10px">투자금 <b class="num">200,000$</b> 기준이에요 · 지금까지 확정한 손익 <span class="pnl-flat num">±0.00$</span> · 미국장 시간엔 30분마다 손절가 접근을 지켜보고 알려 드려요</p><div class="rvport bad">전략 규칙과 다른 부분이 있어요 — 각 종목의 가이드를 참고하세요<div class="rv bad" style="color:inherit"><span class="ic">❌</span><span>같은 그룹(G1) 2종목 동시 보유 — 규칙은 그룹당 1종목. 규칙대로면 RSI가 더 낮았던 TQQQ만 들어가요 (SOXL는 규칙 밖 진입)</span></div><div class="rv ok" style="color:inherit"><span class="ic">✅</span><span>전 종목 동시 손절 시 손실 850$ = 계좌의 0.4% (한도 4.5%)</span></div></div><div class="stocklist">
 <div class="stock">
   <div class="head"><span class="tk">SOXL<span class="sec">반도체</span></span>
   <span class="pill wait num">10주 · 7/17(금) 체결</span></div>
@@ -208,7 +210,7 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
   
   <div class="kv"><div class="cell"><div class="k">평균 매수가</div><div class="v num">133.50$</div></div><div class="cell"><div class="k">현재가</div><div class="v num">135.47$</div></div><div class="cell"><div class="k">평가금액</div><div class="v num">1,355$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">67.28$</div></div></div>
   <div class="sub">지금 판다면 손절가까지 <b class="num">-50.3%</b> 여유가 있어요 · 계좌의 <b class='num'>1%</b> (상한 20%)</div>
-  <div class="review"><div class="rv ok"><span class="ic">✅</span><span>진입 신호 유효 — 체결일 RSI(2) 7.8 (기준 10 미만) · 200일선 위</span></div><div class="rv ok"><span class="ic">✅</span><span>수량 규칙 안 — 보유 10주 ≤ 규칙 수량 45주 · 손절 시 −662$ (0.3%)</span></div><div class="rv guide">▸ <b>분할 매수 가이드</b> — 진입 신호가 아직 켜져 있어 35주 추가 매수 여지 있음 (규칙 수량 45주까지) — 추가해도 평균단가·손절선이 다시 계산됨</div></div>
+  <div class="review"><div class="rv ok"><span class="ic">✅</span><span>진입 신호 유효 — 체결일 RSI(2) 7.8 (기준 10 미만) · 200일선 위</span></div><div class="rv ok"><span class="ic">✅</span><span>수량 규칙 안 — 보유 10주 ≤ 규칙 수량 45주 · 손절 시 −662$ (0.3%)</span></div><div class="rv guide">▸ <b>분할 매수 가이드</b> — 진입 신호가 아직 켜져 있어 35주 추가 매수 여지가 있어요 (규칙 수량 45주까지) — 추가하면 평균단가·손절선을 다시 계산해 드려요</div></div>
   <div class="plan"><div class="step"><span class="n">1</span><span>손절가 <b class='num'>67.28$</b>를 깨면 → 바로 팔아요 <span style='opacity:.75'>(갭 하락 출발이면 시가에)</span></span></div><div class="step"><span class="n">2</span><span>SOXX가 200일선(<span class='num'>390.60</span>) 아래로 마감하면 → 팔아요</span></div><div class="step"><span class="n">3</span><span>5거래일이 지나면 → 종가에 정리해요 — 지금 0일째, <b>5일</b> 남았어요</span></div><div class="step"><span class="n">4</span><span>SOXX가 20일선(<span class='num'>586.15</span>)에 닿으면 → 전부 <b>익절</b>해요</span></div><div class="step"><span class="n" style="background:none">·</span><span style="font-size:12px;opacity:.8">위에서부터 순서대로 확인하고, 먼저 걸리는 하나로 팔아요</span></div></div>
 </div>
 <div class="stock">
@@ -218,7 +220,7 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
   
   <div class="kv"><div class="cell"><div class="k">평균 매수가</div><div class="v num">67.31$</div></div><div class="cell"><div class="k">현재가</div><div class="v num">67.53$</div></div><div class="cell"><div class="k">평가금액</div><div class="v num">1,351$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">57.92$</div></div></div>
   <div class="sub">지금 판다면 손절가까지 <b class="num">-14.2%</b> 여유가 있어요 · 계좌의 <b class='num'>1%</b> (상한 20%)</div>
-  <div class="review"><div class="rv ok"><span class="ic">✅</span><span>진입 신호 유효 — 체결일 RSI(2) 6.7 (기준 10 미만) · 200일선 위</span></div><div class="rv ok"><span class="ic">✅</span><span>수량 규칙 안 — 보유 20주 ≤ 규칙 수량 319주 · 손절 시 −188$ (0.1%)</span></div><div class="rv guide">▸ <b>분할 매수 가이드</b> — 진입 신호가 아직 켜져 있어 299주 추가 매수 여지 있음 (규칙 수량 319주까지) — 추가해도 평균단가·손절선이 다시 계산됨</div></div>
+  <div class="review"><div class="rv ok"><span class="ic">✅</span><span>진입 신호 유효 — 체결일 RSI(2) 6.7 (기준 10 미만) · 200일선 위</span></div><div class="rv ok"><span class="ic">✅</span><span>수량 규칙 안 — 보유 20주 ≤ 규칙 수량 319주 · 손절 시 −188$ (0.1%)</span></div><div class="rv guide">▸ <b>분할 매수 가이드</b> — 진입 신호가 아직 켜져 있어 299주 추가 매수 여지가 있어요 (규칙 수량 319주까지) — 추가하면 평균단가·손절선을 다시 계산해 드려요</div></div>
   <div class="plan"><div class="step"><span class="n">1</span><span>손절가 <b class='num'>57.92$</b>를 깨면 → 바로 팔아요 <span style='opacity:.75'>(갭 하락 출발이면 시가에)</span></span></div><div class="step"><span class="n">2</span><span>QQQ가 200일선(<span class='num'>639.53</span>) 아래로 마감하면 → 팔아요</span></div><div class="step"><span class="n">3</span><span>5거래일이 지나면 → 종가에 정리해요 — 지금 0일째, <b>5일</b> 남았어요</span></div><div class="step"><span class="n">4</span><span>QQQ가 20일선(<span class='num'>718.30</span>)에 닿으면 → 전부 <b>익절</b>해요</span></div><div class="step"><span class="n" style="background:none">·</span><span style="font-size:12px;opacity:.8">위에서부터 순서대로 확인하고, 먼저 걸리는 하나로 팔아요</span></div></div>
 </div></div><div style="margin-top:14px"><div class="note" style="margin-bottom:4px">내 자산이 이렇게 움직였어요 (수익률 <b class="num">+0.00%</b> · 점선이 원금이에요)</div>
 <svg viewBox="0 0 600 130" width="100%" role="img" aria-label="내 실거래 자산 추이" id="livechart" style="touch-action:none">
@@ -445,7 +447,7 @@ qsbShow(); qsbKind("buy");
 
 <section class="card">
   <h2>매매일지 <span class="cnt">결과보다 과정을 평가해요</span></h2>
-  <div class="principle"><b>이 일지는 손익이 아니라 과정을 평가해요.</b> 트레이딩은 확률 게임이라 완벽한 자리도 일정 확률로 져요 — 규칙대로 진 손실은 실패가 아니라 계획된 비용이에요. 하루이틀 결과로 기법을 바꾸지 않고, 최소 3개월(90일) 같은 기법으로 표본을 쌓은 뒤에만 평가해요. 지금 <b class='num'>2일째</b> 같은 기법을 유지하고 있어요 (목표 90일 이상).</div><div class="kv"><div class="cell"><div class="k">완결 매매</div><div class="v num">0건</div></div><div class="cell"><div class="k">승률</div><div class="v num">—</div></div><div class="cell"><div class="k">손익비</div><div class="v num">—</div></div><div class="cell"><div class="k">평균 R</div><div class="v num">—</div></div><div class="cell"><div class="k">과정 준수율</div><div class="v num">50%</div></div><div class="cell"><div class="k">감정 개입률</div><div class="v num">0%</div></div></div><p class="note" style="margin:8px 0 0">참조 목표(백테스트 전체 구간): 승률 <b class="num">72%</b> · PF <b class="num">4.17</b> — 이 근처면 전략이 설계대로 작동하는 거예요. 완결 20건 전에는 수치가 크게 출렁여요.</p><div class="jlist"><div class="jrow"><div class="jhead"><span>7/17(금) 매수 TQQQ <span class="num">20주 @ 67.31$</span></span><span> · 과정 ✅</span></div><div class="jmeta">근거 규칙신호</div><div class="jmemo">백필 — 일지 도입(7/18) 전 체결분을 소급 기록함</div></div><div class="jrow"><div class="jhead"><span>7/17(금) 매수 SOXL <span class="num">10주 @ 133.50$</span></span><span> · 과정 ❌</span></div><div class="jmeta">근거 규칙신호</div><div class="jmemo">백필 — 일지 도입(7/18) 전 체결분을 소급 기록함</div></div></div><p class="note" style="margin:10px 0 0">패턴 분석은 매도(완결 매매)가 쌓이면 자동으로 열려요. 지금은 기록 단계예요.</p><p class="note" style="margin:8px 0 0">전체 기록은 저장소 <code>runs/journal/</code>의 월별 파일에도 자동 보관돼요.</p>
+  <div class="principle"><b>이 일지는 손익이 아니라 과정을 평가해요.</b> 트레이딩은 확률 게임이라 완벽한 자리도 일정 확률로 져요 — 규칙대로 진 손실은 실패가 아니라 계획된 비용이에요. 하루이틀 결과로 기법을 바꾸지 않고, 최소 3개월(90일) 같은 기법으로 표본을 쌓은 뒤에만 평가해요. 지금 <b class='num'>2일째</b> 같은 기법을 유지하고 있어요 (목표 90일 이상).</div><div class="kv"><div class="cell"><div class="k">완결 매매</div><div class="v num">0건</div></div><div class="cell"><div class="k">승률</div><div class="v num">—</div></div><div class="cell"><div class="k">손익비</div><div class="v num">—</div></div><div class="cell"><div class="k">평균 R</div><div class="v num">—</div></div><div class="cell"><div class="k">과정 준수율</div><div class="v num">50%</div></div><div class="cell"><div class="k">감정 개입률</div><div class="v num">0%</div></div></div><p class="note" style="margin:8px 0 0">참조 목표(백테스트 전체 구간): 승률 <b class="num">72%</b> · PF <b class="num">4.17</b> — 이 근처면 전략이 설계대로 작동하는 거예요. 완결 20건 전에는 수치가 크게 출렁여요.</p><div class="jlist"><div class="jrow"><div class="jhead"><span>7/17(금) 매수 TQQQ <span class="num">20주 @ 67.31$</span></span><span> · 과정 ✅</span></div><div class="jmeta">근거 규칙신호</div><div class="jmemo">백필 — 일지 도입(7/18) 전 체결분을 소급 기록함</div></div><div class="jrow"><div class="jhead"><span>7/17(금) 매수 SOXL <span class="num">10주 @ 133.50$</span></span><span> · 과정 ❌</span></div><div class="jmeta">근거 규칙신호</div><div class="jmemo">백필 — 일지 도입(7/18) 전 체결분을 소급 기록함</div></div></div><p class="note" style="margin:10px 0 0">패턴 분석은 매도(완결 매매)가 쌓이면 자동으로 열려요. 지금은 기록 단계예요.</p><p class="note" style="margin:8px 0 0">여기엔 최근 기록만 보여요. 모든 기록은 달마다 일지 파일로 자동 보관되고 있어요.</p>
 </section>
 
 <section class="card">
@@ -614,14 +616,15 @@ qsbShow(); qsbKind("buy");
     <div class="li watch"><span class="b"></span><span><b>대기 현금은 SGOV·BIL에 두세요</b> — 이 전략은 현금으로
     기다리는 날이 많아요(역사적으로 73%). 진입 신호가 뜬 날 팔아서 주문하면 돼요.
     SGOV는 여기 등록하지 않아요 — 전략 성과와 따로 봐요</span></div>
-    <div class="li"><span class="b"></span><span>실거래 주문하는 날 새벽 04:30~04:55엔 <code>장중체크</code>를
-    더블클릭하면 마감 직전 예비 신호를 볼 수 있어요 (확정 판정은 종가예요)</span></div>
-    <div class="li"><span class="b"></span><span>자동 실행이 실패하면 Slack으로 경보가 와요 —
-    그때만 <code>아침업데이트</code>를 더블클릭하면 돼요</span></div>
+    <div class="li"><span class="b"></span><span>주문하는 날 새벽(마감 30분 전쯤)에는 맥 바탕화면의
+    <b>장중체크</b>를 열면 마감 직전 예비 신호를 미리 볼 수 있어요. 확정 판정은 종가 기준이에요</span></div>
+    <div class="li"><span class="b"></span><span>자동 실행이 실패하면 Slack으로 알려 드려요 —
+    그때만 맥에서 <b>아침업데이트</b>를 열면 돼요</span></div>
   </div>
 </section>
 
 <div id="tip" class="num"></div>
-<footer>생성 2026-07-18 09:49 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
-이 화면은 전략 검증용이고 투자 권유가 아니에요 · 3배 레버리지 ETF는 손실이 빠르게 커질 수 있어요</footer>
+<footer>마지막 갱신 2026-07-18 09:57 · 시세는 액면분할을 반영한 수정 주가예요 · 데이터 이상 감시: 정상<br>
+가상 체결에는 불리한 조건(체결 오차 0.10%)을 미리 반영해 계산해요<br>
+이 화면은 개인 기록용이고 투자 권유가 아니에요 · 3배 레버리지 ETF는 손실이 빠르게 커질 수 있어요</footer>
 </div></body></html>
