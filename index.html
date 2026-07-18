@@ -220,24 +220,24 @@ svg text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;fill:
   <div class="sub">지금 판다면 손절가까지 <b class="num">-14.2%</b> 여유가 있어요 · 계좌의 <b class='num'>1%</b> (상한 20%)</div>
   <div class="review"><div class="rv ok"><span class="ic">✅</span><span>진입 신호 유효 — 체결일 RSI(2) 6.7 (기준 10 미만) · 200일선 위</span></div><div class="rv ok"><span class="ic">✅</span><span>수량 규칙 안 — 보유 20주 ≤ 규칙 수량 319주 · 손절 시 −188$ (0.1%)</span></div><div class="rv guide">▸ <b>분할 매수 가이드</b> — 진입 신호가 아직 켜져 있어 299주 추가 매수 여지 있음 (규칙 수량 319주까지) — 추가해도 평균단가·손절선이 다시 계산됨</div></div>
   <div class="plan"><div class="step"><span class="n">1</span><span>손절가 <b class='num'>57.92$</b>를 깨면 → 바로 팔아요 <span style='opacity:.75'>(갭 하락 출발이면 시가에)</span></span></div><div class="step"><span class="n">2</span><span>QQQ가 200일선(<span class='num'>639.53</span>) 아래로 마감하면 → 팔아요</span></div><div class="step"><span class="n">3</span><span>5거래일이 지나면 → 종가에 정리해요 — 지금 0일째, <b>5일</b> 남았어요</span></div><div class="step"><span class="n">4</span><span>QQQ가 20일선(<span class='num'>718.30</span>)에 닿으면 → 전부 <b>익절</b>해요</span></div><div class="step"><span class="n" style="background:none">·</span><span style="font-size:12px;opacity:.8">위에서부터 순서대로 확인하고, 먼저 걸리는 하나로 팔아요</span></div></div>
-</div></div><div style="margin-top:14px"><div class="note" style="margin-bottom:4px">내 자산이 이렇게 움직였어요 (수익률 <b class="num">-98.50%</b> · 점선이 원금이에요)</div>
+</div></div><div style="margin-top:14px"><div class="note" style="margin-bottom:4px">내 자산이 이렇게 움직였어요 (수익률 <b class="num">+0.00%</b> · 점선이 원금이에요)</div>
 <svg viewBox="0 0 600 130" width="100%" role="img" aria-label="내 실거래 자산 추이" id="livechart" style="touch-action:none">
   <line x1="8" y1="108" x2="592" y2="108" stroke="var(--line)" stroke-width="1"/>
-  <line x1="8" y1="12.0" x2="592" y2="12.0" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3" opacity="0.7"/><text x="8" y="8.0">원금</text>
-  <path d="M8.0,108.0 L154.0,108.0 L300.0,108.0 L446.0,108.0 L592.0,108.0 L592.0,108 L8.0,108 Z" fill="var(--accent)" opacity="0.10"/>
-  <path d="M8.0,108.0 L154.0,108.0 L300.0,108.0 L446.0,108.0 L592.0,108.0" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
-  <circle cx="592.0" cy="108.0" r="3.5" fill="var(--accent)"/>
+  <line x1="8" y1="60.0" x2="592" y2="60.0" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3" opacity="0.7"/><text x="8" y="56.0">원금</text>
+  <path d="M8.0,60.0 L154.0,60.0 L300.0,60.0 L446.0,60.0 L592.0,60.0 L592.0,108 L8.0,108 Z" fill="var(--accent)" opacity="0.10"/>
+  <path d="M8.0,60.0 L154.0,60.0 L300.0,60.0 L446.0,60.0 L592.0,60.0" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="592.0" cy="60.0" r="3.5" fill="var(--accent)"/>
   <circle class="focus" r="3.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2" style="display:none"/>
   <text x="8" y="124">2026-07-13</text>
   <text x="592" y="124" text-anchor="end">2026-07-17</text>
-  <text x="592" y="100.0" text-anchor="end">3,000$</text>
+  <text x="592" y="52.0" text-anchor="end">200,000$</text>
 </svg>
 <script>
 (function(){
-  var pts=[["2026-07-13", 3000.0], ["2026-07-14", 3000.0], ["2026-07-15", 3000.0], ["2026-07-16", 3000.0], ["2026-07-17", 3000.0]], svg=document.getElementById('livechart');
+  var pts=[["2026-07-13", 200000.0], ["2026-07-14", 200000.0], ["2026-07-15", 200000.0], ["2026-07-16", 200000.0], ["2026-07-17", 200000.0]], svg=document.getElementById('livechart');
   if(!svg||pts.length<2) return;
   var tip=document.getElementById('tip'), focus=svg.querySelector('.focus');
-  var W=600,PL=8,PR=8,PT=12,PB=22,H=130,lo=3000.0,hi=200000.0;
+  var W=600,PL=8,PR=8,PT=12,PB=22,H=130,lo=199000.0,hi=200999.99999999997;
   function show(ev){
     var r=svg.getBoundingClientRect();
     var fx=(ev.clientX-r.left)/r.width*W;
@@ -358,6 +358,8 @@ function qsbPreview(){
   var pv=document.getElementById("regpv"), t=qsbT(), out=[];
   var qty=qsbNum("regqty"), px=qsbNum("regprice"), cap=QSB_INFO.cap||0;
   if(t&&qsbK==="buy"){
+    if(t.held>0) out.push("이미 <b>"+t.held+"주</b> 보유 중 · 평균 매수가 <b>"+t.avg.toFixed(2)+"$</b> — "
+      +"여기는 <b>추가 매수</b>를 등록하는 화면이에요. 흐린 숫자는 입력값이 아니라 안내값(규칙 수량·최근 종가)이에요.");
     if(t.status!=="signal") out.push('<span class="pv-warn">지금은 이 종목 진입 신호가 없어요 (등록 자체는 가능해요)</span>');
     if(qty&&px){
       var amt=qty*px, w=cap>0?amt/cap:0;
@@ -537,7 +539,7 @@ qsbShow(); qsbKind("buy");
   <div class="big num pnl-down">-0.47$ <span style="font-size:14px">(-0.10%)</span></div><div class="kv"><div class="cell"><div class="k">매수가</div><div class="v num">67.60$</div></div><div class="cell"><div class="k">현재가</div><div class="v num">67.53$</div></div><div class="cell"><div class="k">손절가</div><div class="v num">58.20$</div></div><div class="cell"><div class="k">익절 기준(QQQ 20일선)</div><div class="v num">718.30</div></div></div><div class="plan"><div class="step"><span class="n">1</span><span>손절가 <b class='num'>58.20$</b>를 깨면 → 바로 팔아요 <span style='opacity:.75'>(갭 하락 출발이면 시가에)</span></span></div><div class="step"><span class="n">2</span><span>QQQ가 200일선 아래로 마감하면 → 팔아요</span></div><div class="step"><span class="n">3</span><span>5거래일이 지나면 → 종가에 정리해요 — 지금 0일째, <b>5일</b> 남았어요</span></div><div class="step"><span class="n">4</span><span>QQQ가 20일선(<span class='num'>718.30</span>)에 닿으면 → 전부 <b>익절</b>해요</span></div><div class="step"><span class="n" style="background:none">·</span><span style="font-size:12px;opacity:.8">위에서부터 순서대로 확인하고, 먼저 걸리는 하나로 팔아요</span></div></div>
 </div></div>
   <details><summary>매매 기록</summary><div class="dbody">아직 완료한 매매가 없어요. 첫 매수 후 매도까지 마치면 여기에 쌓여요.</div></details>
-  <details><summary>월별 성과</summary><div class="dbody"><div class="tblwrap"><table><thead><tr><th>달</th><th>가상 계좌</th><th>내 실거래</th></tr></thead><tbody><tr><td>7월 (진행 중)</td><td class='num pnl-down'>-0.01%</td><td class='num pnl-down'>-98.50%</td></tr></tbody></table><p class="note" style="margin:8px 0 0">달마다 계좌가 몇 % 움직였는지예요. 1년 정상 범위 안의 마이너스 달은 계획된 등락이에요.</p></div></details>
+  <details><summary>월별 성과</summary><div class="dbody"><div class="tblwrap"><table><thead><tr><th>달</th><th>가상 계좌</th><th>내 실거래</th></tr></thead><tbody><tr><td>7월 (진행 중)</td><td class='num pnl-down'>-0.01%</td><td class='num pnl-flat'>+0.00%</td></tr></tbody></table><p class="note" style="margin:8px 0 0">달마다 계좌가 몇 % 움직였는지예요. 1년 정상 범위 안의 마이너스 달은 계획된 등락이에요.</p></div></details>
 </section>
 
 <section class="card">
@@ -620,6 +622,6 @@ qsbShow(); qsbKind("buy");
 </section>
 
 <div id="tip" class="num"></div>
-<footer>생성 2026-07-18 09:42 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
+<footer>생성 2026-07-18 09:49 · 데이터 yfinance 수정주가 · 데이터 정합 감시: 정상 · 가상 체결 슬리피지 편도 0.10%<br>
 이 화면은 전략 검증용이고 투자 권유가 아니에요 · 3배 레버리지 ETF는 손실이 빠르게 커질 수 있어요</footer>
 </div></body></html>
